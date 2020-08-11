@@ -13,8 +13,20 @@ struct SetGameView: View {
 
     var body: some View {
         VStack {
-            Grid(items: model.cards) { card in
-                CardView(card: card)
+            Text("Points: \(model.model.points)")
+
+            Grid(items: model.dealtCards) { card in
+                CardView(card: card).onTapGesture {
+                    self.model.pickCard(card: card)
+                }
+            }
+
+            HStack {
+                Button(action: {
+                    self.model.dealCards()
+                }) {
+                    Text("Add more cards")
+                }
             }
         }
     }

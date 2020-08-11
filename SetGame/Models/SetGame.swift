@@ -10,7 +10,13 @@ import Foundation
 import SwiftUI
 
 struct SetGame {
+    private static let maxHandSize = 3
+    private let numberOfFeatures = 3
+    private let numberOfCards = 81
     private(set) var cards: [Card]
+    private(set) var dealtCards: [Card]
+    private(set) var hand: [Card]
+    var points: Int
 
     struct Card: Identifiable {
         var id: Int
@@ -20,9 +26,60 @@ struct SetGame {
         var shading: String
     }
 
+    private let colors = [UIColor.red, UIColor.blue, UIColor.green]
+    private let shapes = ["Circle", "Square", "Star"]
+    private let shading = ["Plain", "Empty", "Striped"]
 
-    init() {
-        cards = [Card(id: 1, color: UIColor.init(), number: 1, shape: "Circle", shading: "Plain")]
+    private func generateCard(for index: Int) -> Card {
+        Card(
+            id: index,
+            color: colors[index % numberOfFeatures],
+            number: index % numberOfFeatures,
+            shape: shapes[index % numberOfFeatures],
+            shading: shading[index % numberOfFeatures]
+        )
     }
 
+    init() {
+        points = 0
+        cards = []
+        dealtCards = []
+        hand = []
+        for i in 0..<numberOfCards {
+            cards.append(generateCard(for: i))
+        }
+        dealCards(numberOfCards: 12)
+    }
+
+    // MARK: - Mutations
+
+    mutating func dealCards(numberOfCards: Int = maxHandSize) {
+        for _ in 0...numberOfCards {
+            if let randomCard = cards.randomElement(),
+                let randomCardIndex = cards.firstIndex(of: randomCard) {
+                dealtCards.append(randomCard)
+                cards.remove(at: randomCardIndex)
+            }
+        }
+    }
+
+    private func isSet(cards: [Card]) -> Bool {
+        true
+    }
+
+    mutating func pickCard(card: Card) {
+        if let cardIndex = cards.firstIndex(of: card) {
+            hand.append(card)
+            dealtCards.remove(at: cardIndex)
+
+            if hand.count == 3 && isSet(cards: hand) {
+                points += 1
+                // Show success picking set
+                cards.removeAll()
+                dealCards()
+            } else {
+                points -= 1
+            }
+        }
+    }
 }

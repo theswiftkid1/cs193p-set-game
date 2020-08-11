@@ -100,16 +100,16 @@
 		CAA1185E24E1D2B500C9A495 /* SetGame */ = {
 			isa = PBXGroup;
 			children = (
-				CA65148624E1DB9B00DAB30C /* Extensions */,
-				CA65148524E1DB6B00DAB30C /* ViewModels */,
-				CA65148424E1DB5C00DAB30C /* Models */,
-				CA65148324E1DB4E00DAB30C /* Views */,
 				CAA1186D24E1D2B600C9A495 /* Info.plist */,
 				CAA1185F24E1D2B500C9A495 /* AppDelegate.swift */,
 				CAA1186124E1D2B500C9A495 /* SceneDelegate.swift */,
 				CAA1186524E1D2B600C9A495 /* Assets.xcassets */,
+				CA65148624E1DB9B00DAB30C /* Extensions */,
 				CAA1186A24E1D2B600C9A495 /* LaunchScreen.storyboard */,
+				CA65148424E1DB5C00DAB30C /* Models */,
 				CAA1186724E1D2B600C9A495 /* Preview Content */,
+				CA65148524E1DB6B00DAB30C /* ViewModels */,
+				CA65148324E1DB4E00DAB30C /* Views */,
 			);
 			path = SetGame;
 			sourceTree = "<group>";
