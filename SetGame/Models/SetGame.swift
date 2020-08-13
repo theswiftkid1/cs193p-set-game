@@ -48,13 +48,12 @@ struct SetGame {
         for i in 0..<numberOfCards {
             cards.append(generateCard(for: i))
         }
-        dealCards(numberOfCards: 12)
     }
 
     // MARK: - Mutations
 
-    mutating func dealCards(numberOfCards: Int = maxHandSize) {
-        for _ in 0...numberOfCards {
+    mutating func dealCards(_ numberOfCards: Int = maxHandSize) {
+        for _ in 0..<numberOfCards {
             if let randomCard = cards.randomElement(),
                 let randomCardIndex = cards.firstIndex(of: randomCard) {
                 dealtCards.append(randomCard)

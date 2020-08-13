@@ -8,8 +8,8 @@
 
 import Foundation
 
-class SetGameViewModel: ObservableObject {
-    @Published private(set) var model: SetGame = SetGameViewModel.newGame()
+class GameViewModel: ObservableObject {
+    @Published private(set) var game: SetGame = GameViewModel.newGame()
 
     private static func newGame() -> SetGame {
         return SetGame()
@@ -18,20 +18,22 @@ class SetGameViewModel: ObservableObject {
     // MARK: Access to the Model
 
     var dealtCards: [SetGame.Card] {
-        model.dealtCards
+        game.dealtCards
     }
 
     // MARK: - Intent
 
     func newGame() {
-        model = SetGameViewModel.newGame()
+        game = GameViewModel.newGame()
+        game.dealCards(12)
     }
 
+
     func dealCards() {
-        model.dealCards()
+        game.dealCards(3)
     }
 
     func pickCard(card: SetGame.Card) {
-        model.pickCard(card: card)
+        game.pickCard(card: card)
     }
 }
