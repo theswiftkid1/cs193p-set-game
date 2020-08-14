@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct CardView: View {
-    var card: SetGame.Card
+    var card: GameModel.Card
 
     var body: some View {
         RoundedRectangle(cornerRadius: 20)

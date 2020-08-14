@@ -9,15 +9,15 @@
 import Foundation
 
 class GameViewModel: ObservableObject {
-    @Published private(set) var game: SetGame = GameViewModel.newGame()
+    @Published private(set) var game: GameModel = GameViewModel.newGame()
 
-    private static func newGame() -> SetGame {
-        return SetGame()
+    private static func newGame() -> GameModel {
+        return GameModel()
     }
 
     // MARK: Access to the Model
 
-    var dealtCards: [SetGame.Card] {
+    var dealtCards: [GameModel.Card] {
         game.dealtCards
     }
 
@@ -33,7 +33,7 @@ class GameViewModel: ObservableObject {
         game.dealCards(3)
     }
 
-    func pickCard(card: SetGame.Card) {
+    func pickCard(card: GameModel.Card) {
         game.pickCard(card: card)
     }
 }

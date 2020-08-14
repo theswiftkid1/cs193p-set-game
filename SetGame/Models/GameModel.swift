@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-struct SetGame {
+struct GameModel {
     private static let maxHandSize = 3
     private let numberOfFeatures = 3
     private let numberOfCards = 81
