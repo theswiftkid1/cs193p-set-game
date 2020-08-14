@@ -9,21 +9,31 @@
 import SwiftUI
 
 struct GameView: View {
-    @ObservedObject var model: GameViewModel
-    @State var scale: CGFloat = 1
+    @ObservedObject var viewModel: GameViewModel
 
     var body: some View {
         VStack {
-            Text("SET")
-                .font(.largeTitle)
+            HStack {
+                Spacer()
+                Text("SET")
+                Spacer()
+                Text(String(self.viewModel.points))
+                Spacer()
+            }
+            .font(.title)
 
             ZStack {
-                Grid(items: model.dealtCards) { card in
-                    CardView(card: card).onTapGesture {
-                        self.model.pickCard(card: card)
+                Grid(items: viewModel.dealtCards) { card in
+                    CardView(card: card)
+                        .scaleEffect(card.isSelected ? 1.15 : 1)
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.1)) {
+                                self.viewModel.pickCard(card: card)
+                            }
                     }
                     .transition(.offset(self.randomOffset))
                 }
+                .padding()
             }.onAppear {
                 self.newGame()
             }
@@ -76,16 +86,16 @@ struct GameView: View {
     // when the previous animation is finished
     private func newGame() {
         withAnimation(Animation.easeIn(duration: 0.5)) {
-            self.model.clearGame()
+            self.viewModel.clearGame()
         }
         withAnimation(Animation.easeOut.delay(0.5)) {
-            self.model.dealCards()
+            self.viewModel.dealCards()
         }
     }
 
     private func dealMoreCards() {
         withAnimation(.easeOut(duration: 0.5)) {
-            self.model.dealCards(3)
+            self.viewModel.dealCards(3)
         }
     }
 }
@@ -93,6 +103,6 @@ struct GameView: View {
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
         let model = GameViewModel()
-        return GameView(model: model)
+        return GameView(viewModel: model)
     }
 }

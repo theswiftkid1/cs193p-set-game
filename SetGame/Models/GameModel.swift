@@ -15,7 +15,7 @@ struct GameModel {
     private let numberOfCards = 81
     private(set) var cards: [Card]
     private(set) var dealtCards: [Card]
-    private(set) var hand: [Card]
+//    private(set) var hand: [(index: Int, card: Card)]
     var points: Int
 
     struct Card: Identifiable {
@@ -24,7 +24,10 @@ struct GameModel {
         var number: Int
         var shape: String
         var shading: String
+        var isSelected: Bool = false
     }
+
+    // MARK: - Initialization
 
     private let colors = [UIColor.red, UIColor.blue, UIColor.green]
     private let shapes = ["Circle", "Square", "Star"]
@@ -44,10 +47,10 @@ struct GameModel {
         points = 0
         cards = []
         dealtCards = []
-        hand = []
         for i in 0..<numberOfCards {
             cards.append(generateCard(for: i))
         }
+        cards.shuffle()
     }
 
     // MARK: - Mutations
@@ -63,21 +66,33 @@ struct GameModel {
     }
 
     private func isSet(cards: [Card]) -> Bool {
-        true
+        false
     }
 
     mutating func pickCard(card: Card) {
-        if let cardIndex = cards.firstIndex(of: card) {
-            hand.append(card)
-            dealtCards.remove(at: cardIndex)
+        func selectCard(cardIndex: Int, card: Card) {
+            dealtCards[cardIndex].isSelected = true
+            let nbOfSelectedCards = dealtCards.count { $0.isSelected }
 
-            if hand.count == 3 && isSet(cards: hand) {
+            if isSet(cards: dealtCards) {
+                dealtCards.removeAll { $0.isSelected == true }
                 points += 1
-                // Show success picking set
-                cards.removeAll()
-                dealCards()
-            } else {
+                dealCards(3)
+            } else if nbOfSelectedCards > GameModel.maxHandSize {
+                for index in dealtCards.indices {
+                    dealtCards[index].isSelected = false
+                }
+                dealtCards[cardIndex].isSelected = true
                 points -= 1
+            }
+        }
+
+
+        if let cardIndex = dealtCards.firstIndex(of: card) {
+            if (card.isSelected) {
+                dealtCards[cardIndex].isSelected = false
+            } else {
+                selectCard(cardIndex: cardIndex, card: card)
             }
         }
     }

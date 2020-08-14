@@ -21,6 +21,10 @@ class GameViewModel: ObservableObject {
         game.dealtCards
     }
 
+    var points: Int {
+        game.points
+    }
+
     // MARK: - Intent
 
     func newGame() {

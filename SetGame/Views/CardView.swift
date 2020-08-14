@@ -11,9 +11,22 @@ import SwiftUI
 struct CardView: View {
     var card: GameModel.Card
 
+    private var cardStroke: Color {
+        if card.isSelected {
+            return Color.init(red: 255 / 255, green: 55 / 255, blue: 95 / 255)
+        } else {
+            return Color.init(red: 10 / 255, green: 132 / 255, blue: 255 / 255)
+        }
+    }
+
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
-            .stroke(Color.init(red: 10 / 255, green: 132 / 255, blue: 255 / 255), lineWidth: 4)
+            .foregroundColor(.white)
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(cardStroke, lineWidth: 4)
+        )
             .padding()
+
     }
 }
