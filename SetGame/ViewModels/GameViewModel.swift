@@ -15,7 +15,7 @@ class GameViewModel: ObservableObject {
         return GameModel()
     }
 
-    // MARK: Access to the Model
+    // MARK: - Access to the Model
 
     var dealtCards: [GameModel.Card] {
         game.dealtCards
@@ -24,13 +24,16 @@ class GameViewModel: ObservableObject {
     // MARK: - Intent
 
     func newGame() {
-        game = GameViewModel.newGame()
-        game.dealCards(12)
+        clearGame()
+        dealCards()
     }
 
+    func clearGame() {
+        game = GameViewModel.newGame()
+    }
 
-    func dealCards() {
-        game.dealCards(3)
+    func dealCards(_ numberOfCards: Int = 12) {
+        game.dealCards(numberOfCards)
     }
 
     func pickCard(card: GameModel.Card) {

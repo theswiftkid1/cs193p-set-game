@@ -62,8 +62,8 @@ struct GameView: View {
         let screenSize: CGSize = UIScreen.main.bounds.size
         let screenSide: [CGFloat] = [-1, 1]
 
-        let x: CGFloat = .random(in: screenSize.width..<screenSize.width * 2) * screenSide.randomElement()!
-        let y: CGFloat = .random(in: screenSize.height..<screenSize.height * 2) * screenSide.randomElement()!
+        let x: CGFloat = .random(in: screenSize.width..<screenSize.width * 1.5) * screenSide.randomElement()!
+        let y: CGFloat = .random(in: screenSize.height..<screenSize.height * 1.5) * screenSide.randomElement()!
 
         return CGSize(width: x, height: y)
     }
@@ -72,15 +72,20 @@ struct GameView: View {
         return Double.random(in: 0...1)
     }
 
+    // TODO: - Use AnimatableModifier to make a custom animation, which is triggered
+    // when the previous animation is finished
     private func newGame() {
-        withAnimation(Animation.linear(duration: 2)) {
-            self.model.newGame()
+        withAnimation(Animation.easeIn(duration: 0.5)) {
+            self.model.clearGame()
+        }
+        withAnimation(Animation.easeOut.delay(0.5)) {
+            self.model.dealCards()
         }
     }
 
     private func dealMoreCards() {
-        withAnimation(.easeInOut(duration: 3)) {
-            self.model.dealCards()
+        withAnimation(.easeOut(duration: 0.5)) {
+            self.model.dealCards(3)
         }
     }
 }

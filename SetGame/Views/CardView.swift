@@ -13,13 +13,7 @@ struct CardView: View {
 
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
-            .overlay(
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(Color.init(red: 10, green: 132, blue: 255), lineWidth: 2)
-        )
-            .foregroundColor(.init(red: 0, green: 122, blue: 255))
-            .aspectRatio(contentMode: .fit)
+            .stroke(Color.init(red: 10 / 255, green: 132 / 255, blue: 255 / 255), lineWidth: 4)
             .padding()
-
     }
 }
