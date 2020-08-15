@@ -21,19 +21,21 @@ struct GameView: View {
                 Spacer()
             }
             .font(.title)
+            .padding()
 
             ZStack {
                 Grid(items: viewModel.dealtCards) { card in
                     CardView(card: card)
+                        .aspectRatio(CGSize(width: 2.2, height: 3), contentMode: ContentMode.fit)
                         .scaleEffect(card.isSelected ? 1.15 : 1)
                         .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.1)) {
                                 self.viewModel.pickCard(card: card)
                             }
                     }
-                    .transition(.offset(self.randomOffset))
+                        .transition(.offset(self.randomOffset))
                 }
-                .padding()
+                .padding([.horizontal, .bottom])
             }.onAppear {
                 self.newGame()
             }
@@ -42,14 +44,17 @@ struct GameView: View {
                 Spacer()
                 makeActionButton(text: "New Game", action: self.newGame)
                 Spacer()
-                makeActionButton(text: "Deal More Cards", action: self.dealMoreCards)
+                makeActionButton(text: "Deal More Cards",
+                                 action: self.dealMoreCards,
+                                 borderColor: Color.init(red: 52 / 255, green: 199 / 255, blue: 89 / 255))
                 Spacer()
             }
         }
     }
 
     func makeActionButton(text: String,
-                          action: @escaping () -> Void) -> some View {
+                          action: @escaping () -> Void,
+                          borderColor: Color = Color.blue) -> some View {
         Button(action: {
             action()
         }) {
@@ -57,15 +62,15 @@ struct GameView: View {
                 .font(.headline)
                 .foregroundColor(Color.black)
                 .padding()
-                .overlay(buttonOverlay)
+                .overlay(buttonOverlay(borderColor: borderColor))
         }
 
     }
 
-    private var buttonOverlay: some View {
+    private func buttonOverlay(borderColor: Color) -> some View {
         RoundedRectangle(cornerRadius: 10)
-            .stroke(Color.blue, lineWidth: 3)
-            .foregroundColor(Color.blue)
+            .stroke(borderColor, lineWidth: 3)
+            .foregroundColor(borderColor)
     }
 
     private var randomOffset: CGSize {

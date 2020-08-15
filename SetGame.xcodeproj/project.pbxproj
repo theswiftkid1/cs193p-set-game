@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA30975924E850BE00B7DF19 /* SetShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA30975824E850BE00B7DF19 /* SetShape.swift */; };
+		CA30975B24E8517F00B7DF19 /* SetShading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA30975A24E8517F00B7DF19 /* SetShading.swift */; };
 		CAA1186024E1D2B500C9A495 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1185F24E1D2B500C9A495 /* AppDelegate.swift */; };
 		CAA1186224E1D2B500C9A495 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1186124E1D2B500C9A495 /* SceneDelegate.swift */; };
 		CAA1186424E1D2B500C9A495 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1186324E1D2B500C9A495 /* GameView.swift */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CA30975824E850BE00B7DF19 /* SetShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetShape.swift; sourceTree = "<group>"; };
+		CA30975A24E8517F00B7DF19 /* SetShading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetShading.swift; sourceTree = "<group>"; };
 		CAA1185C24E1D2B500C9A495 /* SetGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SetGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAA1185F24E1D2B500C9A495 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CAA1186124E1D2B500C9A495 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +70,8 @@
 			isa = PBXGroup;
 			children = (
 				CAA1187324E1D3F000C9A495 /* GameModel.swift */,
+				CA30975824E850BE00B7DF19 /* SetShape.swift */,
+				CA30975A24E8517F00B7DF19 /* SetShading.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -200,6 +206,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAA1187624E1D40C00C9A495 /* GameViewModel.swift in Sources */,
+				CA30975B24E8517F00B7DF19 /* SetShading.swift in Sources */,
+				CA30975924E850BE00B7DF19 /* SetShape.swift in Sources */,
 				CAA1186024E1D2B500C9A495 /* AppDelegate.swift in Sources */,
 				CAA1186224E1D2B500C9A495 /* SceneDelegate.swift in Sources */,
 				CAA1187824E1D5C000C9A495 /* GridLayout.swift in Sources */,

@@ -15,23 +15,26 @@ struct GameModel {
     private let numberOfCards = 81
     private(set) var cards: [Card]
     private(set) var dealtCards: [Card]
-//    private(set) var hand: [(index: Int, card: Card)]
-    var points: Int
+    private(set) var points: Int
 
     struct Card: Identifiable {
         var id: Int
         var color: UIColor
         var number: Int
-        var shape: String
-        var shading: String
+        var shape: SetShape
+        var shading: SetShading
         var isSelected: Bool = false
     }
 
     // MARK: - Initialization
 
-    private let colors = [UIColor.red, UIColor.blue, UIColor.green]
-    private let shapes = ["Circle", "Square", "Star"]
-    private let shading = ["Plain", "Empty", "Striped"]
+    private let colors: [UIColor] = [
+        UIColor.init(red: 255 / 255, green: 55 / 255, blue: 95 / 255, alpha: 1),
+        UIColor.init(red: 10 / 255, green: 132 / 255, blue: 255 / 255, alpha: 1),
+        UIColor.init(red: 52 / 255, green: 199 / 255, blue: 89 / 255, alpha: 1)
+    ]
+    private let shapes: [SetShape] = [.Circle, .Ellipse, .Rectangle]
+    private let shading: [SetShading] = [.Plain, .Open, .Striped]
 
     private func generateCard(for index: Int) -> Card {
         Card(
@@ -66,7 +69,31 @@ struct GameModel {
     }
 
     private func isSet(cards: [Card]) -> Bool {
-        false
+        func checkRules<T: Equatable & Hashable>(of array: [T]) -> Bool {
+            return array.dropFirst().allSatisfy({ $0 == array.first }) ||
+                array.count == Set(array).count
+        }
+
+        func checkNumber(of cards: [Card]) -> Bool {
+            checkRules(of: cards.map { $0.number })
+        }
+
+        func checkColor(of cards: [Card]) -> Bool {
+            checkRules(of: cards.map { $0.color })
+        }
+
+        func checkShape(of cards: [Card]) -> Bool {
+            checkRules(of: cards.map { $0.shape })
+        }
+
+        func checkShading(of cards: [Card]) -> Bool {
+            checkRules(of: cards.map { $0.shading })
+        }
+
+        return checkNumber(of: cards) &&
+            checkColor(of: cards) &&
+            checkShape(of: cards) &&
+            checkShading(of: cards)
     }
 
     mutating func pickCard(card: Card) {
@@ -86,7 +113,6 @@ struct GameModel {
                 points -= 1
             }
         }
-
 
         if let cardIndex = dealtCards.firstIndex(of: card) {
             if (card.isSelected) {

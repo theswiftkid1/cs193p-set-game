@@ -11,22 +11,29 @@ import SwiftUI
 struct CardView: View {
     var card: GameModel.Card
 
-    private var cardStroke: Color {
-        if card.isSelected {
-            return Color.init(red: 255 / 255, green: 55 / 255, blue: 95 / 255)
-        } else {
-            return Color.init(red: 10 / 255, green: 132 / 255, blue: 255 / 255)
+    func cardShape() -> AnyView {
+        switch card.shape {
+        case .Circle: return AnyView(Circle())
+        case .Ellipse: return AnyView(Ellipse())
+        case .Rectangle: return AnyView(Rectangle())
         }
     }
 
     var body: some View {
-        RoundedRectangle(cornerRadius: 20)
-            .foregroundColor(.white)
-            .overlay(
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(cardStroke, lineWidth: 4)
-        )
-            .padding()
-
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .foregroundColor(.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color(card.color), lineWidth: 4)
+            )
+                .overlay(
+                    cardShape()
+                        .foregroundColor(Color(card.color))
+                        .padding()
+            )
+//                .shadow(color: Color.gray, radius: 10, x: 5, y: 5)
+                .padding()
+        }
     }
 }
