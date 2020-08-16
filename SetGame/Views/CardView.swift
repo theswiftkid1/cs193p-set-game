@@ -28,9 +28,11 @@ struct CardView: View {
                         .stroke(Color(card.color), lineWidth: 4)
             )
                 .overlay(
-                    cardShape()
-                        .foregroundColor(Color(card.color))
-                        .padding()
+                    ForEach(0..<card.number) { _ in
+                        self.cardShape()
+                            .foregroundColor(Color(self.card.color))
+                            .padding()
+                    }
             )
 //                .shadow(color: Color.gray, radius: 10, x: 5, y: 5)
                 .padding()

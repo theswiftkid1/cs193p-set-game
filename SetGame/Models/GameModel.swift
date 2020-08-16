@@ -11,14 +11,13 @@ import SwiftUI
 
 struct GameModel {
     private static let maxHandSize = 3
-    private let numberOfFeatures = 3
     private let numberOfCards = 81
     private(set) var cards: [Card]
     private(set) var dealtCards: [Card]
     private(set) var points: Int
 
     struct Card: Identifiable {
-        var id: Int
+        var id: UUID = UUID()
         var color: UIColor
         var number: Int
         var shape: SetShape
@@ -28,31 +27,37 @@ struct GameModel {
 
     // MARK: - Initialization
 
+    private let maxNumberOfShapes = 3
     private let colors: [UIColor] = [
         UIColor.init(red: 255 / 255, green: 55 / 255, blue: 95 / 255, alpha: 1),
         UIColor.init(red: 10 / 255, green: 132 / 255, blue: 255 / 255, alpha: 1),
         UIColor.init(red: 52 / 255, green: 199 / 255, blue: 89 / 255, alpha: 1)
     ]
     private let shapes: [SetShape] = [.Circle, .Ellipse, .Rectangle]
-    private let shading: [SetShading] = [.Plain, .Open, .Striped]
+    private let shadings: [SetShading] = [.Plain, .Open, .Striped]
 
-    private func generateCard(for index: Int) -> Card {
-        Card(
-            id: index,
-            color: colors[index % numberOfFeatures],
-            number: index % numberOfFeatures,
-            shape: shapes[index % numberOfFeatures],
-            shading: shading[index % numberOfFeatures]
-        )
+    mutating private func generateCards() -> Void {
+        for color in colors {
+            for shape in shapes {
+                for shading in shadings {
+                    for number in 1...maxNumberOfShapes {
+                        self.cards.append(Card(
+                            color: color,
+                            number: number,
+                            shape: shape,
+                            shading: shading
+                        ))
+                    }
+                }
+            }
+        }
     }
 
     init() {
         points = 0
         cards = []
         dealtCards = []
-        for i in 0..<numberOfCards {
-            cards.append(generateCard(for: i))
-        }
+        generateCards()
         cards.shuffle()
     }
 
