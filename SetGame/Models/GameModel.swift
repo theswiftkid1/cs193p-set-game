@@ -95,7 +95,8 @@ struct GameModel {
             checkRules(of: cards.map { $0.shading })
         }
 
-        return checkNumber(of: cards) &&
+        return cards.count == GameModel.maxHandSize &&
+            checkNumber(of: cards) &&
             checkColor(of: cards) &&
             checkShape(of: cards) &&
             checkShading(of: cards)
@@ -104,17 +105,16 @@ struct GameModel {
     mutating func pickCard(card: Card) {
         func selectCard(cardIndex: Int, card: Card) {
             dealtCards[cardIndex].isSelected = true
-            let nbOfSelectedCards = dealtCards.count { $0.isSelected }
+            let selectedCards = dealtCards.filter { $0.isSelected }
 
-            if isSet(cards: dealtCards) {
+            if isSet(cards: selectedCards) {
                 dealtCards.removeAll { $0.isSelected == true }
                 points += 1
                 dealCards(3)
-            } else if nbOfSelectedCards > GameModel.maxHandSize {
+            } else if selectedCards.count >= GameModel.maxHandSize {
                 for index in dealtCards.indices {
                     dealtCards[index].isSelected = false
                 }
-                dealtCards[cardIndex].isSelected = true
                 points -= 1
             }
         }
