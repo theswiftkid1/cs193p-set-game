@@ -37,7 +37,7 @@ struct GameView: View {
                 }
                 .padding([.horizontal, .bottom])
             }.onAppear {
-                self.newGame()
+                self.dealCards()
             }
 
             HStack {
@@ -87,15 +87,19 @@ struct GameView: View {
         return Double.random(in: 0...1)
     }
 
+    private func dealCards(delay: Double = 0) {
+        withAnimation(Animation.easeOut(duration: 0.5).delay(delay)) {
+            self.viewModel.dealCards()
+        }
+    }
+
     // TODO: - Use AnimatableModifier to make a custom animation, which is triggered
     // when the previous animation is finished
     private func newGame() {
         withAnimation(Animation.easeIn(duration: 0.5)) {
             self.viewModel.clearGame()
         }
-        withAnimation(Animation.easeOut.delay(0.5)) {
-            self.viewModel.dealCards()
-        }
+        dealCards(delay: 0.5)
     }
 
     private func dealMoreCards() {

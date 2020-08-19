@@ -12,6 +12,7 @@ struct CardView: View {
     var card: GameModel.Card
 
     let strokeWidth: CGFloat = 4
+    let matchedColor: Color = Color.init(red: 255 / 255, green: 214 / 255, blue: 10 / 255)
     var opacity: Double {
         card.shading == .Striped ? 0.5 : 1
     }
@@ -33,11 +34,17 @@ struct CardView: View {
         }
     }
 
+
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .foregroundColor(.white)
-                .shadow(color: .black, radius: card.isSelected ? 10 : 0, x: 0, y: 0)
+                .shadow(
+                    color: card.isMatched ? matchedColor : .black,
+                    radius: card.isSelected ? 10 : 0,
+                    x: 0,
+                    y: 0
+            )
 
             RoundedRectangle(cornerRadius: 20)
                 .stroke(Color(card.color), lineWidth: 4)
