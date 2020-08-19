@@ -12,7 +12,7 @@ struct CardView: View {
     var card: GameModel.Card
 
     let strokeWidth: CGFloat = 4
-    let matchedColor: Color = Color.init(red: 255 / 255, green: 214 / 255, blue: 10 / 255)
+    let matchedColor: Color = Color(red: 255 / 255, green: 214 / 255, blue: 10 / 255)
     var opacity: Double {
         card.shading == .Striped ? 0.5 : 1
     }
@@ -23,10 +23,10 @@ struct CardView: View {
             return AnyView(Circle().stroke(lineWidth: strokeWidth))
         case (.Circle, _):
             return AnyView(Circle())
-        case (.Ellipse, .Open):
-            return AnyView(Ellipse().stroke(lineWidth: strokeWidth))
-        case (.Ellipse, _):
-            return AnyView(Ellipse())
+        case (.Diamond, .Open):
+            return AnyView(Diamond().stroke(lineWidth: strokeWidth))
+        case (.Diamond, _):
+            return AnyView(Diamond())
         case (.Rectangle, .Open):
             return AnyView(Rectangle().stroke(lineWidth: strokeWidth))
         case (.Rectangle, _):

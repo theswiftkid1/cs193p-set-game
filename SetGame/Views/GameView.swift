@@ -46,7 +46,7 @@ struct GameView: View {
                 Spacer()
                 makeActionButton(text: "Deal More Cards",
                                  action: self.dealMoreCards,
-                                 borderColor: Color.init(red: 52 / 255, green: 199 / 255, blue: 89 / 255))
+                                 borderColor: Color(red: 52 / 255, green: 199 / 255, blue: 89 / 255))
                 Spacer()
             }
         }

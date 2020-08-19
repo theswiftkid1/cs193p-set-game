@@ -10,6 +10,6 @@ import Foundation
 
 enum SetShape {
     case Circle
-    case Ellipse
+    case Diamond
     case Rectangle
 }

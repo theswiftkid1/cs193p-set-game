@@ -20,6 +20,7 @@
 		CAA1187824E1D5C000C9A495 /* GridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1187724E1D5C000C9A495 /* GridLayout.swift */; };
 		CAA1187A24E1D5F000C9A495 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1187924E1D5F000C9A495 /* Grid.swift */; };
 		CAA1187C24E1D63200C9A495 /* Array+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1187B24E1D63200C9A495 /* Array+Identifiable.swift */; };
+		CAC8C71B24EDB40600922999 /* Diamond.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC8C71A24EDB40600922999 /* Diamond.swift */; };
 		CACC017224E709B700DF7B6A /* Collection+Count.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACC017124E709B700DF7B6A /* Collection+Count.swift */; };
 		CAD79FE724E5C34B00005242 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD79FE624E5C34B00005242 /* CardView.swift */; };
 /* End PBXBuildFile section */
@@ -40,6 +41,7 @@
 		CAA1187724E1D5C000C9A495 /* GridLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridLayout.swift; sourceTree = "<group>"; };
 		CAA1187924E1D5F000C9A495 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		CAA1187B24E1D63200C9A495 /* Array+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Identifiable.swift"; sourceTree = "<group>"; };
+		CAC8C71A24EDB40600922999 /* Diamond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diamond.swift; sourceTree = "<group>"; };
 		CACC017124E709B700DF7B6A /* Collection+Count.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Count.swift"; sourceTree = "<group>"; };
 		CAD79FE624E5C34B00005242 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -62,6 +64,7 @@
 				CAA1187724E1D5C000C9A495 /* GridLayout.swift */,
 				CAA1186324E1D2B500C9A495 /* GameView.swift */,
 				CAD79FE624E5C34B00005242 /* CardView.swift */,
+				CAC8C71A24EDB40600922999 /* Diamond.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 				CA30975B24E8517F00B7DF19 /* SetShading.swift in Sources */,
 				CA30975924E850BE00B7DF19 /* SetShape.swift in Sources */,
 				CAA1186024E1D2B500C9A495 /* AppDelegate.swift in Sources */,
+				CAC8C71B24EDB40600922999 /* Diamond.swift in Sources */,
 				CAA1186224E1D2B500C9A495 /* SceneDelegate.swift in Sources */,
 				CAA1187824E1D5C000C9A495 /* GridLayout.swift in Sources */,
 				CAD79FE724E5C34B00005242 /* CardView.swift in Sources */,

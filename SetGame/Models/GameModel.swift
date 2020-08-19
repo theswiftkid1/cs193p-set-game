@@ -34,7 +34,7 @@ struct GameModel {
         UIColor.init(red: 10 / 255, green: 132 / 255, blue: 255 / 255, alpha: 1),
         UIColor.init(red: 52 / 255, green: 199 / 255, blue: 89 / 255, alpha: 1)
     ]
-    private let shapes: [SetShape] = [.Circle, .Ellipse, .Rectangle]
+    private let shapes: [SetShape] = [.Circle, .Diamond, .Rectangle]
     private let shadings: [SetShading] = [.Plain, .Open, .Striped]
 
     mutating private func generateCards() -> Void {
