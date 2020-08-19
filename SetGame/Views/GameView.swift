@@ -9,7 +9,9 @@
 import SwiftUI
 
 struct GameView: View {
-    @ObservedObject var viewModel: GameViewModel
+    @ObservedObject var game: GameViewModel
+
+    let disabledButtonColor = Color.gray
 
     var body: some View {
         VStack {
@@ -17,20 +19,20 @@ struct GameView: View {
                 Spacer()
                 Text("SET")
                 Spacer()
-                Text(String(self.viewModel.points))
+                Text(String(game.points))
                 Spacer()
             }
             .font(.title)
             .padding()
 
             ZStack {
-                Grid(items: viewModel.dealtCards) { card in
+                Grid(items: game.dealtCards) { card in
                     CardView(card: card)
                         .aspectRatio(CGSize(width: 2.2, height: 3), contentMode: ContentMode.fit)
                         .scaleEffect(card.isSelected ? 1.15 : 1)
                         .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.1)) {
-                                self.viewModel.pickCard(card: card)
+                                self.game.pickCard(card: card)
                             }
                     }
                         .transition(.offset(self.randomOffset))
@@ -40,15 +42,20 @@ struct GameView: View {
                 self.dealCards()
             }
 
-            HStack {
-                Spacer()
-                makeActionButton(text: "New Game", action: self.newGame)
-                Spacer()
-                makeActionButton(text: "Deal More Cards",
-                                 action: self.dealMoreCards,
-                                 borderColor: Color(red: 52 / 255, green: 199 / 255, blue: 89 / 255))
-                Spacer()
-            }
+            bottomBar
+        }
+    }
+
+    var bottomBar: some View {
+        HStack {
+            Spacer()
+            makeActionButton(text: "New Game", action: self.newGame)
+            Spacer()
+            makeActionButton(text: "Deal More Cards",
+                             action: self.dealMoreCards,
+                             borderColor: game.deckCardsNumber == 0 ? disabledButtonColor : Color(red: 52 / 255, green: 199 / 255, blue: 89 / 255))
+                .disabled(game.deckCardsNumber == 0)
+            Spacer()
         }
     }
 
@@ -64,7 +71,6 @@ struct GameView: View {
                 .padding()
                 .overlay(buttonOverlay(borderColor: borderColor))
         }
-
     }
 
     private func buttonOverlay(borderColor: Color) -> some View {
@@ -89,7 +95,7 @@ struct GameView: View {
 
     private func dealCards(delay: Double = 0) {
         withAnimation(Animation.easeOut(duration: 0.5).delay(delay)) {
-            self.viewModel.dealCards()
+            self.game.dealCards()
         }
     }
 
@@ -97,14 +103,14 @@ struct GameView: View {
     // when the previous animation is finished
     private func newGame() {
         withAnimation(Animation.easeIn(duration: 0.5)) {
-            self.viewModel.clearGame()
+            self.game.clearGame()
         }
         dealCards(delay: 0.5)
     }
 
     private func dealMoreCards() {
         withAnimation(.easeOut(duration: 0.5)) {
-            self.viewModel.dealCards(3)
+            self.game.dealCards(3)
         }
     }
 }
@@ -112,6 +118,6 @@ struct GameView: View {
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
         let model = GameViewModel()
-        return GameView(viewModel: model)
+        return GameView(game: model)
     }
 }

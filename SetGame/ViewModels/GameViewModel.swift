@@ -21,6 +21,10 @@ class GameViewModel: ObservableObject {
         game.dealtCards
     }
 
+    var deckCardsNumber: Int {
+        game.cards.count
+    }
+
     var points: Int {
         game.points
     }
