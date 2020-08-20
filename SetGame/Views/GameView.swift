@@ -15,15 +15,7 @@ struct GameView: View {
 
     var body: some View {
         VStack {
-            HStack {
-                Spacer()
-                Text("SET")
-                Spacer()
-                Text(String(game.points))
-                Spacer()
-            }
-            .font(.title)
-            .padding()
+            topBar
 
             ZStack {
                 Grid(items: game.dealtCards) { card in
@@ -35,7 +27,7 @@ struct GameView: View {
                                 self.game.pickCard(card: card)
                             }
                     }
-                        .transition(.offset(self.randomOffset))
+                    .transition(.offset(self.randomOffset))
                 }
                 .padding([.horizontal, .bottom])
             }.onAppear {
@@ -46,30 +38,54 @@ struct GameView: View {
         }
     }
 
+    var topBar: some View {
+        VStack {
+            HStack {
+                Text("Set Card Game")
+                    .font(.title)
+                    .bold()
+                    .padding([.top])
+                    .frame(minWidth: 0, maxWidth: .infinity)
+            }
+            HStack {
+                deck
+                Text("Score: \(game.points)")
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
+            }
+            .padding([.top])
+        }
+        .padding([.leading, .trailing])
+    }
+
+    var deck: some View {
+        Text("Deck")
+    }
+
     var bottomBar: some View {
         HStack {
-            Spacer()
             makeActionButton(text: "New Game", action: self.newGame)
-            Spacer()
-            makeActionButton(text: "Deal More Cards",
+
+            makeActionButton(text: "Deal Cards",
                              action: self.dealMoreCards,
                              borderColor: game.deckCardsNumber == 0 ? disabledButtonColor : Color(red: 52 / 255, green: 199 / 255, blue: 89 / 255))
                 .disabled(game.deckCardsNumber == 0)
-            Spacer()
         }
+        .padding([.leading, .trailing])
     }
 
     func makeActionButton(text: String,
                           action: @escaping () -> Void,
                           borderColor: Color = Color.blue) -> some View {
-        Button(action: {
-            action()
-        }) {
-            Text(text)
-                .font(.headline)
-                .foregroundColor(Color.black)
-                .padding()
-                .overlay(buttonOverlay(borderColor: borderColor))
+        Button(action: action) {
+            HStack {
+                Spacer()
+                Text(text)
+                Spacer()
+            }
+            .font(.headline)
+            .foregroundColor(Color.black)
+            .padding()
+            .overlay(buttonOverlay(borderColor: borderColor))
         }
     }
 
@@ -77,6 +93,7 @@ struct GameView: View {
         RoundedRectangle(cornerRadius: 10)
             .stroke(borderColor, lineWidth: 3)
             .foregroundColor(borderColor)
+            .padding([.leading, .trailing])
     }
 
     private var randomOffset: CGSize {
@@ -93,9 +110,10 @@ struct GameView: View {
         return Double.random(in: 0...1)
     }
 
-    private func dealCards(delay: Double = 0) {
+    private func dealCards(numberOfCards: Int = 12,
+                           delay: Double = 0) {
         withAnimation(Animation.easeOut(duration: 0.5).delay(delay)) {
-            self.game.dealCards()
+            self.game.dealCards(numberOfCards)
         }
     }
 
@@ -109,9 +127,7 @@ struct GameView: View {
     }
 
     private func dealMoreCards() {
-        withAnimation(.easeOut(duration: 0.5)) {
-            self.game.dealCards(3)
-        }
+        dealCards(numberOfCards: 3)
     }
 }
 
