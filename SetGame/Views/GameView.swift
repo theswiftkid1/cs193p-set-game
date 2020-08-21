@@ -14,52 +14,81 @@ struct GameView: View {
     let disabledButtonColor = Color.gray
 
     var body: some View {
-        VStack {
+        VStack(alignment: .center) {
             topBar
-
-            ZStack {
-                Grid(items: game.dealtCards) { card in
-                    CardView(card: card)
-                        .aspectRatio(CGSize(width: 2.2, height: 3), contentMode: ContentMode.fit)
-                        .scaleEffect(card.isSelected ? 1.15 : 1)
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.1)) {
-                                self.game.pickCard(card: card)
-                            }
-                    }
-                    .transition(.offset(self.randomOffset))
-                }
-                .padding([.horizontal, .bottom])
-            }.onAppear {
-                self.dealCards()
-            }
-
+            gameBar
             bottomBar
         }
     }
 
-    var topBar: some View {
-        VStack {
-            HStack {
-                Text("Set Card Game")
-                    .font(.title)
-                    .bold()
-                    .padding([.top])
-                    .frame(minWidth: 0, maxWidth: .infinity)
+    // MARK: - GAME
+
+    var gameBar: some View {
+        ZStack {
+            Grid(items: game.dealtCards) { card in
+                CardView(card: card)
+                    .padding([.bottom])
+                    .scaleEffect(card.isSelected ? 1.10 : 1)
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.1)) {
+                            self.game.pickCard(card: card)
+                        }
+                }
+                .transition(.offset(self.randomOffset))
             }
-            HStack {
-                deck
-                Text("Score: \(game.points)")
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
-            }
-            .padding([.top])
+        }.onAppear {
+            self.dealCards()
         }
-        .padding([.leading, .trailing])
     }
 
-    var deck: some View {
-        Text("Deck")
+    // MARK: - TOP BAR
+
+    var topBar: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Spacer()
+                Text("Set Card Game")
+                    .font(.system(size: 22))
+                    .bold()
+                Spacer()
+            }
+            //            .background(Color.orange)
+
+            HStack {
+                HStack {
+                    self.deck
+                    Spacer()
+                }
+                .frame(maxHeight: 100)
+                //                .background(Color.yellow)
+
+
+                Text("Score: \(game.points)")
+                    .multilineTextAlignment(.trailing)
+                //                    .background(Color.blue)
+            }
+        }
+        .padding([.leading, .trailing])
+        //        .background(Color.green)
     }
+
+    // TODO: - Don't hardcode the offset
+    @ViewBuilder
+    var deck: some View {
+        if game.dealtCards.first != nil {
+            ZStack {
+                ForEach(0..<4) { index in
+                    CardView(card: self.game.dealtCards.first!, side: .Back)
+                        .rotationEffect(.degrees(90))
+                        .offset(x: 20, y: -10 + CGFloat((4 - index) * 5))
+                }
+            }
+        } else {
+            EmptyView()
+        }
+    }
+
+    // MARK: - BOTTOM BAR
 
     var bottomBar: some View {
         HStack {
@@ -72,6 +101,8 @@ struct GameView: View {
         }
         .padding([.leading, .trailing])
     }
+
+    // MARK: - ACTIONS
 
     func makeActionButton(text: String,
                           action: @escaping () -> Void,
@@ -104,10 +135,6 @@ struct GameView: View {
         let y: CGFloat = .random(in: screenSize.height..<screenSize.height * 1.5) * screenSide.randomElement()!
 
         return CGSize(width: x, height: y)
-    }
-
-    private var randomDelay: Double {
-        return Double.random(in: 0...1)
     }
 
     private func dealCards(numberOfCards: Int = 12,
