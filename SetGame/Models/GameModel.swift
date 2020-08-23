@@ -16,17 +16,17 @@ struct GameModel {
     private(set) var dealtCards: [Card]
     private(set) var points: Int
 
-    struct Card: Identifiable {
+    struct Card: Identifiable, Hashable {
         var id: UUID = UUID()
         var color: UIColor
         var number: Int
         var shape: SetShape
         var shading: SetShading
         var isSelected: Bool = false
-        var isMatched: Bool = false
+        var matchStatus: MatchStatus = .Unmatched
     }
 
-    // MARK: - Initialization
+    // MARK: - Game Setup
 
     private let maxNumberOfShapes = 3
     private let colors: [UIColor] = [
@@ -74,25 +74,25 @@ struct GameModel {
         }
     }
 
-    private func isSet(_ selectedCards: [Card]) -> Bool {
+    private func isMatch(_ selectedCards: Set<Card>) -> Bool {
         func checkRules<T: Equatable & Hashable>(of array: [T]) -> Bool {
             return array.dropFirst().allSatisfy({ $0 == array.first }) ||
                 array.count == Set(array).count
         }
 
-        func checkNumber(of cards: [Card]) -> Bool {
+        func checkNumber(of cards: Set<Card>) -> Bool {
             checkRules(of: cards.map { $0.number })
         }
 
-        func checkColor(of cards: [Card]) -> Bool {
+        func checkColor(of cards: Set<Card>) -> Bool {
             checkRules(of: cards.map { $0.color })
         }
 
-        func checkShape(of cards: [Card]) -> Bool {
+        func checkShape(of cards: Set<Card>) -> Bool {
             checkRules(of: cards.map { $0.shape })
         }
 
-        func checkShading(of cards: [Card]) -> Bool {
+        func checkShading(of cards: Set<Card>) -> Bool {
             checkRules(of: cards.map { $0.shading })
         }
 
@@ -104,41 +104,42 @@ struct GameModel {
     }
 
     mutating func pickCard(card: Card) {
-        func clearMatchedSet() {
-            let matchedSet = dealtCards.firstIndex { $0.isMatched }
-            dealtCards.removeAll { $0.isMatched == true }
-            if matchedSet != nil {
+        func clearMatchStatuses() {
+            if dealtCards.exists({ $0.matchStatus == .Matched }) {
                 dealCards(3)
             }
+            dealtCards.removeAll { $0.matchStatus == .Matched }
+            dealtCards.updateAll { $0.matchStatus = .Unmatched }
         }
 
-        func selectCard(cardIndex: Int, card: Card) {
-            dealtCards[cardIndex].isSelected = true
-            let selectedCards = dealtCards.filter { $0.isSelected }
+        func selectCard(at index: Int) {
+            dealtCards[index].isSelected = true
+            let selectedCards = Set(dealtCards.filter { $0.isSelected })
 
-            if selectedCards.count > GameModel.setSize {
-                clearMatchedSet()
-
-                for index in dealtCards.indices {
-                    if (index != cardIndex) {
-                        dealtCards[index].isSelected = false
+            if selectedCards.count > GameModel.setSize
+                || dealtCards.exists({ $0.matchStatus == .WrongMatch }) {
+                clearMatchStatuses()
+                for dealtCardIndex in dealtCards.indices {
+                    if dealtCardIndex != index {
+                        dealtCards[dealtCardIndex].isSelected = false
                     }
                 }
-            } else if isSet(selectedCards) {
-                for index in dealtCards.indices {
-                    dealtCards[index].isMatched = dealtCards[index].isSelected
-                }
+            } else if isMatch(selectedCards) {
+                dealtCards.updateAll { $0.matchStatus = $0.isSelected ? .Matched : .Unmatched }
                 points += 1
             } else if selectedCards.count == GameModel.setSize {
+                dealtCards.updateAll { $0.matchStatus = $0.isSelected ? .WrongMatch : .Unmatched }
                 points -= 1
             }
         }
 
         if let cardIndex = dealtCards.firstIndex(of: card) {
-            if (card.isSelected && !card.isMatched) {
+            if (card.matchStatus == .Matched) {
+                return
+            } else if (card.isSelected && card.matchStatus != .WrongMatch) {
                 dealtCards[cardIndex].isSelected = false
             } else {
-                selectCard(cardIndex: cardIndex, card: card)
+                selectCard(at: cardIndex)
             }
         }
     }

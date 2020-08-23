@@ -19,9 +19,15 @@ struct CardView: View {
 
     let shapeStrokeWidth: CGFloat = 2
     let cardStrokeWidth: CGFloat = 4
-    let matchedColor: Color = Color(red: 255 / 255, green: 214 / 255, blue: 10 / 255)
     var opacity: Double {
         card.shading == .Striped ? 0.5 : 1
+    }
+    var shadowColor: Color {
+        switch card.matchStatus {
+        case .Unmatched: return Color.gray
+        case .Matched: return Color(red: 255 / 255, green: 214 / 255, blue: 10 / 255)
+        case .WrongMatch: return Color(red: 255 / 255, green: 59 / 255, blue: 48 / 255)
+        }
     }
 
     var cardShape: some View {
@@ -62,7 +68,7 @@ struct CardView: View {
             RoundedRectangle(cornerRadius: 20)
                 .foregroundColor(.white)
                 .shadow(
-                    color: card.isMatched ? matchedColor : .black,
+                    color: shadowColor,
                     radius: card.isSelected ? 10 : 0,
                     x: 0,
                     y: 0

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		CA30975924E850BE00B7DF19 /* SetShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA30975824E850BE00B7DF19 /* SetShape.swift */; };
 		CA30975B24E8517F00B7DF19 /* SetShading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA30975A24E8517F00B7DF19 /* SetShading.swift */; };
+		CA4A726024F2B07200256191 /* MatchStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4A725F24F2B07200256191 /* MatchStatus.swift */; };
+		CA4A726424F2BA6500256191 /* MutableCollection+Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4A726324F2BA6500256191 /* MutableCollection+Update.swift */; };
+		CA4A726624F2C64600256191 /* Collection+Exists.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4A726524F2C64600256191 /* Collection+Exists.swift */; };
 		CAA1186024E1D2B500C9A495 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1185F24E1D2B500C9A495 /* AppDelegate.swift */; };
 		CAA1186224E1D2B500C9A495 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1186124E1D2B500C9A495 /* SceneDelegate.swift */; };
 		CAA1186424E1D2B500C9A495 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1186324E1D2B500C9A495 /* GameView.swift */; };
@@ -28,6 +31,9 @@
 /* Begin PBXFileReference section */
 		CA30975824E850BE00B7DF19 /* SetShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetShape.swift; sourceTree = "<group>"; };
 		CA30975A24E8517F00B7DF19 /* SetShading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetShading.swift; sourceTree = "<group>"; };
+		CA4A725F24F2B07200256191 /* MatchStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchStatus.swift; sourceTree = "<group>"; };
+		CA4A726324F2BA6500256191 /* MutableCollection+Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MutableCollection+Update.swift"; sourceTree = "<group>"; };
+		CA4A726524F2C64600256191 /* Collection+Exists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Exists.swift"; sourceTree = "<group>"; };
 		CAA1185C24E1D2B500C9A495 /* SetGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SetGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAA1185F24E1D2B500C9A495 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CAA1186124E1D2B500C9A495 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +81,7 @@
 				CAA1187324E1D3F000C9A495 /* GameModel.swift */,
 				CA30975824E850BE00B7DF19 /* SetShape.swift */,
 				CA30975A24E8517F00B7DF19 /* SetShading.swift */,
+				CA4A725F24F2B07200256191 /* MatchStatus.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -92,6 +99,8 @@
 			children = (
 				CAA1187B24E1D63200C9A495 /* Array+Identifiable.swift */,
 				CACC017124E709B700DF7B6A /* Collection+Count.swift */,
+				CA4A726324F2BA6500256191 /* MutableCollection+Update.swift */,
+				CA4A726524F2C64600256191 /* Collection+Exists.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -211,10 +220,13 @@
 				CAA1187624E1D40C00C9A495 /* GameViewModel.swift in Sources */,
 				CA30975B24E8517F00B7DF19 /* SetShading.swift in Sources */,
 				CA30975924E850BE00B7DF19 /* SetShape.swift in Sources */,
+				CA4A726024F2B07200256191 /* MatchStatus.swift in Sources */,
+				CA4A726424F2BA6500256191 /* MutableCollection+Update.swift in Sources */,
 				CAA1186024E1D2B500C9A495 /* AppDelegate.swift in Sources */,
 				CAC8C71B24EDB40600922999 /* Diamond.swift in Sources */,
 				CAA1186224E1D2B500C9A495 /* SceneDelegate.swift in Sources */,
 				CAA1187824E1D5C000C9A495 /* GridLayout.swift in Sources */,
+				CA4A726624F2C64600256191 /* Collection+Exists.swift in Sources */,
 				CAD79FE724E5C34B00005242 /* CardView.swift in Sources */,
 				CACC017224E709B700DF7B6A /* Collection+Count.swift in Sources */,
 				CAA1187424E1D3F000C9A495 /* GameModel.swift in Sources */,
