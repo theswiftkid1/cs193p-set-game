@@ -28,20 +28,16 @@ struct GameModel {
 
     // MARK: - Game Setup
 
-    private let maxNumberOfShapes = 3
-    private let colors: [UIColor] = [
-        UIColor.init(red: 255 / 255, green: 55 / 255, blue: 95 / 255, alpha: 1),
-        UIColor.init(red: 10 / 255, green: 132 / 255, blue: 255 / 255, alpha: 1),
-        UIColor.init(red: 52 / 255, green: 199 / 255, blue: 89 / 255, alpha: 1)
-    ]
-    private let shapes: [SetShape] = [.Circle, .Diamond, .Rectangle]
-    private let shadings: [SetShading] = [.Plain, .Open, .Striped]
-
-    mutating private func generateCards() -> Void {
+    mutating private func generateCards(
+        colors: [UIColor],
+        shapes: [SetShape],
+        shadings: [SetShading],
+        numberOfShapes: Int
+    ) -> Void {
         for color in colors {
             for shape in shapes {
                 for shading in shadings {
-                    for number in 1...maxNumberOfShapes {
+                    for number in 1...numberOfShapes {
                         self.cards.append(Card(
                             color: color,
                             number: number,
@@ -54,11 +50,21 @@ struct GameModel {
         }
     }
 
-    init() {
+    init(
+        colors: [UIColor],
+        shapes: [SetShape],
+        shadings: [SetShading],
+        numberOfShapes: Int
+    ) {
         points = 0
         cards = []
         dealtCards = []
-        generateCards()
+        generateCards(
+            colors: colors,
+            shapes: shapes,
+            shadings: shadings,
+            numberOfShapes: numberOfShapes
+        )
         cards.shuffle()
     }
 
