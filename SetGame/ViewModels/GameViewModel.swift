@@ -15,21 +15,21 @@ class GameViewModel: ObservableObject {
     private static func newGame() -> GameModel {
         // Testing data
         // TODO: - Find a better way to test winning games
-//        let numberOfShapes = 3
-//        let colors: [UIColor] = [
-//            UIColor.init(red: 255 / 255, green: 55 / 255, blue: 95 / 255, alpha: 1),
-//        ]
-//        let shapes: [SetShape] = [.Circle, .Diamond]
-//        let shadings: [SetShading] = [.Plain]
-
+        let numberOfShapes = 3
         let colors: [UIColor] = [
             UIColor.init(red: 255 / 255, green: 55 / 255, blue: 95 / 255, alpha: 1),
-            UIColor.init(red: 10 / 255, green: 132 / 255, blue: 255 / 255, alpha: 1),
-            UIColor.init(red: 52 / 255, green: 199 / 255, blue: 89 / 255, alpha: 1)
         ]
-        let shapes: [SetShape] = [.Circle, .Diamond, .Rectangle]
-        let shadings: [SetShading] = [.Plain, .Open, .Striped]
-        let numberOfShapes = 3
+        let shapes: [SetShape] = [.Circle]
+        let shadings: [SetShading] = [.Plain]
+
+//        let colors: [UIColor] = [
+//            UIColor.init(red: 255 / 255, green: 55 / 255, blue: 95 / 255, alpha: 1),
+//            UIColor.init(red: 10 / 255, green: 132 / 255, blue: 255 / 255, alpha: 1),
+//            UIColor.init(red: 52 / 255, green: 199 / 255, blue: 89 / 255, alpha: 1)
+//        ]
+//        let shapes: [SetShape] = [.Circle, .Diamond, .Rectangle]
+//        let shadings: [SetShading] = [.Plain, .Open, .Striped]
+//        let numberOfShapes = 3
 
         return GameModel.init(
             colors: colors,
@@ -51,6 +51,10 @@ class GameViewModel: ObservableObject {
 
     var points: Int {
         game.points
+    }
+
+    var isGameOver: Bool {
+        dealtCards.isEmpty && deckCardsNumber == 0
     }
 
     // MARK: - Intent

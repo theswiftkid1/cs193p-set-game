@@ -15,29 +15,48 @@ struct GameView: View {
 
     var body: some View {
         VStack(alignment: .center) {
-            topBar
-            gameBar
+            if game.isGameOver {
+                    endGame
+                        .transition(
+                            AnyTransition.asymmetric(
+                                insertion: AnyTransition.scale(scale: 10).animation(.spring()),
+                                removal: AnyTransition.opacity.animation(.easeIn(duration: 1))
+                            )
+                )
+            } else {
+                topBar
+                gameTable
+            }
+
             bottomBar
         }
     }
 
+    // MARK - END GAME
+
+    var endGame: some View {
+        EndGame()
+    }
+
     // MARK: - GAME
 
-    var gameBar: some View {
-        ZStack {
-            Grid(items: game.dealtCards) { card in
-                CardView(card: card)
-                    .padding([.bottom])
-                    .scaleEffect(card.isSelected ? 1.10 : 1)
-                    .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.1)) {
-                            self.game.pickCard(card: card)
-                        }
+    var gameTable: some View {
+        VStack {
+            ZStack {
+                Grid(items: game.dealtCards) { card in
+                    CardView(card: card)
+                        .padding([.bottom])
+                        .scaleEffect(card.isSelected ? 1.10 : 1)
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.1)) {
+                                self.game.pickCard(card: card)
+                            }
+                    }
+                    .transition(.offset(self.randomOffset))
                 }
-                .transition(.offset(self.randomOffset))
+            }.onAppear {
+                self.dealCards()
             }
-        }.onAppear {
-            self.dealCards()
         }
     }
 
@@ -60,10 +79,9 @@ struct GameView: View {
                     Spacer()
                 }
                 .frame(maxHeight: 100)
-                //                .background(Color.yellow)
-
 
                 Text("Score: \(game.points)")
+                    .bold()
                     .multilineTextAlignment(.trailing)
                 //                    .background(Color.blue)
             }
@@ -80,9 +98,13 @@ struct GameView: View {
                 ForEach(0..<4) { index in
                     CardView(card: self.game.dealtCards.first!, side: .Back)
                         .rotationEffect(.degrees(90))
-                        .offset(x: 20, y: -10 + CGFloat((4 - index) * 5))
+                        .offset(x: 0, y: 0 + CGFloat((4 - index) * 5))
                 }
+                Text("\(game.deckCardsNumber)")
+                    .bold()
+                    .padding([.top])
             }
+            .offset(x: 20, y: -10)
         } else {
             EmptyView()
         }
@@ -147,7 +169,7 @@ struct GameView: View {
     // TODO: - Use AnimatableModifier to make a custom animation, which is triggered
     // when the previous animation is finished
     private func newGame() {
-        withAnimation(Animation.easeIn(duration: 0.5)) {
+        withAnimation(.easeIn(duration: 0.5)) {
             self.game.clearGame()
         }
         dealCards(delay: 0.5)

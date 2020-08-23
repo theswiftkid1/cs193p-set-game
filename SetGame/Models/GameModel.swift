@@ -124,12 +124,15 @@ struct GameModel {
 
             if selectedCards.count > GameModel.setSize
                 || dealtCards.exists({ $0.matchStatus == .WrongMatch }) {
-                clearMatchStatuses()
                 for dealtCardIndex in dealtCards.indices {
                     if dealtCardIndex != index {
                         dealtCards[dealtCardIndex].isSelected = false
                     }
                 }
+                clearMatchStatuses()
+            } else if selectedCards.count == dealtCards.count {
+                dealtCards.removeAll()
+                points += 1
             } else if isMatch(selectedCards) {
                 dealtCards.updateAll { $0.matchStatus = $0.isSelected ? .Matched : .Unmatched }
                 points += 1
@@ -139,10 +142,9 @@ struct GameModel {
             }
         }
 
-        if let cardIndex = dealtCards.firstIndex(of: card) {
-            if (card.matchStatus == .Matched) {
-                return
-            } else if (card.isSelected && card.matchStatus != .WrongMatch) {
+        if card.matchStatus != .Matched,
+            let cardIndex = dealtCards.firstIndex(of: card) {
+            if (card.isSelected && card.matchStatus != .WrongMatch) {
                 dealtCards[cardIndex].isSelected = false
             } else {
                 selectCard(at: cardIndex)
