@@ -16,12 +16,12 @@ struct GameView: View {
     var body: some View {
         VStack(alignment: .center) {
             if game.isGameOver {
-                    endGame
-                        .transition(
-                            AnyTransition.asymmetric(
-                                insertion: AnyTransition.scale(scale: 10).animation(.spring()),
-                                removal: AnyTransition.opacity.animation(.easeIn(duration: 1))
-                            )
+                endGame
+                    .transition(
+                        AnyTransition.asymmetric(
+                            insertion: AnyTransition.scale(scale: 10).animation(.spring()),
+                            removal: AnyTransition.opacity.animation(.easeIn(duration: 1))
+                        )
                 )
             } else {
                 topBar
@@ -52,7 +52,11 @@ struct GameView: View {
                                 self.game.pickCard(card: card)
                             }
                     }
-                    .transition(.offset(self.randomOffset))
+                    .transition(.asymmetric(
+                        insertion: .offset(self.deckPosition),
+                        removal: .offset(self.randomOffset)
+                        )
+                    )
                 }
             }.onAppear {
                 self.dealCards()
@@ -74,10 +78,11 @@ struct GameView: View {
             //            .background(Color.orange)
 
             HStack {
-                HStack {
-                    self.deck
+                Group {
+                    deck
                     Spacer()
                 }
+                .multilineTextAlignment(.leading)
                 .frame(maxHeight: 100)
 
                 Text("Score: \(game.points)")
@@ -90,24 +95,8 @@ struct GameView: View {
         //        .background(Color.green)
     }
 
-    // TODO: - Don't hardcode the offset
-    @ViewBuilder
     var deck: some View {
-        if game.dealtCards.first != nil {
-            ZStack {
-                ForEach(0..<4) { index in
-                    CardView(card: self.game.dealtCards.first!, side: .Back)
-                        .rotationEffect(.degrees(90))
-                        .offset(x: 0, y: 0 + CGFloat((4 - index) * 5))
-                }
-                Text("\(game.deckCardsNumber)")
-                    .bold()
-                    .padding([.top])
-            }
-            .offset(x: 20, y: -10)
-        } else {
-            EmptyView()
-        }
+        DeckView(numberOfCards: game.deckCardsNumber)
     }
 
     // MARK: - BOTTOM BAR
@@ -125,6 +114,10 @@ struct GameView: View {
     }
 
     // MARK: - ACTIONS
+
+    func flipCard(card: GameModel.Card) {
+        self.game.flipCard(card: card)
+    }
 
     func makeActionButton(text: String,
                           action: @escaping () -> Void,
@@ -147,6 +140,10 @@ struct GameView: View {
             .stroke(borderColor, lineWidth: 3)
             .foregroundColor(borderColor)
             .padding([.leading, .trailing])
+    }
+
+    private var deckPosition: CGSize {
+        return CGSize(width: -1000, height: -1000)
     }
 
     private var randomOffset: CGSize {
@@ -176,7 +173,9 @@ struct GameView: View {
     }
 
     private func dealMoreCards() {
-        dealCards(numberOfCards: 3)
+        dealCards(numberOfCards: 1)
+        dealCards(numberOfCards: 1, delay: 0.5)
+        dealCards(numberOfCards: 1, delay: 1)
     }
 }
 

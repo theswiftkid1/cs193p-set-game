@@ -9,22 +9,14 @@
 import SwiftUI
 
 struct CardView: View {
-    enum CardSide {
-        case Front
-        case Back
-    }
-
     var card: GameModel.Card
-    var side: CardSide = .Front
-
     let shapeStrokeWidth: CGFloat = 2
-    let cardStrokeWidth: CGFloat = 4
     var opacity: Double {
         card.shading == .Striped ? 0.5 : 1
     }
     var shadowColor: Color {
         switch card.matchStatus {
-        case .Unmatched: return Color.gray
+        case .Unmatched: return Color.black
         case .Matched: return Color(red: 255 / 255, green: 214 / 255, blue: 10 / 255)
         case .WrongMatch: return Color(red: 255 / 255, green: 59 / 255, blue: 48 / 255)
         }
@@ -47,57 +39,25 @@ struct CardView: View {
         }
     }
 
-
     var body: some View {
-        cardView
-            .padding(cardStrokeWidth)
-            .aspectRatio(2/3, contentMode: ContentMode.fit)
-    }
-
-    @ViewBuilder
-    var cardView: some View {
-        if side == .Front {
-            front
-        } else {
-            back
+        Group {
+            VStack {
+                ForEach(0..<card.number) { _ in
+                    self.cardShape
+                        .foregroundColor(Color(self.card.color))
+                        .opacity(self.opacity)
+                }
+            }
+            .padding()
+            .cardify(isFaceUp: card.isFaceUp)
         }
-    }
-
-    var front: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .foregroundColor(.white)
-                .shadow(
-                    color: shadowColor,
-                    radius: card.isSelected ? 10 : 0,
-                    x: 0,
-                    y: 0
-            )
-
-            RoundedRectangle(cornerRadius: 20)
-                .stroke(Color(card.color), lineWidth: cardStrokeWidth)
-                .overlay (
-                    VStack {
-                        ForEach(0..<card.number) { _ in
-                            self.cardShape
-                                .foregroundColor(Color(self.card.color))
-                                .opacity(self.opacity)
-                                .padding(.horizontal)
-                        }
-                    }
-                    .padding(.vertical)
-            )
-        }
-    }
-
-    var back: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .foregroundColor(Color(card.color).opacity(0.7))
-
-            RoundedRectangle(cornerRadius: 22)
-                .strokeBorder(Color.black.opacity(0.2), lineWidth: cardStrokeWidth)
-        }
+        .clipped()
+        .shadow(
+            color: shadowColor,
+            radius: card.isSelected ? 10 : 0,
+            x: 0,
+            y: 0
+        )
     }
 }
 
@@ -108,17 +68,6 @@ struct CardView_Previews: PreviewProvider {
         game.dealCards(1)
         let card = game.dealtCards.first!
         return CardView(card: card)
-            .previewLayout(.fixed(width: 200, height: 300))
-    }
-}
-
-struct CardBackView_Previews: PreviewProvider {
-    static let game = GameViewModel()
-
-    static var previews: some View {
-        game.dealCards(1)
-        let card = game.dealtCards.first!
-        return CardView(card: card, side: .Back)
             .previewLayout(.fixed(width: 200, height: 300))
     }
 }
