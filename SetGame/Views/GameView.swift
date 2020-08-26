@@ -8,6 +8,25 @@
 
 import SwiftUI
 
+struct DeckViewModifier: ViewModifier {
+    var geometry: GeometryProxy
+
+    func body(content: Content) -> some View {
+        let frame = self.geometry.frame(in: CoordinateSpace.local)
+        let size = CGSize(width: frame.origin.x - 0, height: frame.origin.y - 100)
+        return content.offset(size)
+    }
+}
+
+extension AnyTransition {
+    static func dealFromDeck(geometry: GeometryProxy) -> AnyTransition {
+        .modifier(
+            active: DeckViewModifier(geometry: geometry),
+            identity: DeckViewModifier(geometry: geometry)
+        )
+    }
+}
+
 struct GameView: View {
     @ObservedObject var game: GameViewModel
 
@@ -32,7 +51,7 @@ struct GameView: View {
         }
     }
 
-    // MARK - END GAME
+    // MARK: - END GAME
 
     var endGame: some View {
         EndGame()
@@ -43,20 +62,27 @@ struct GameView: View {
     var gameTable: some View {
         VStack {
             ZStack {
-                Grid(items: game.dealtCards) { card in
-                    CardView(card: card)
-                        .padding([.bottom])
-                        .scaleEffect(card.isSelected ? 1.10 : 1)
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.1)) {
-                                self.game.pickCard(card: card)
-                            }
-                    }
-                    .transition(.asymmetric(
-                        insertion: .offset(self.deckPosition),
-                        removal: .offset(self.randomOffset)
+                GeometryReader { geoProxy in
+                    Grid(items: self.game.dealtCards) { card in
+                        CardView(card: card)
+                            .padding([.bottom])
+                            .scaleEffect(card.isSelected ? 1.10 : 1)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.1)) {
+                                    self.game.pickCard(card: card)
+                                }
+                        }
+                        .transition(.asymmetric(
+                            insertion: .offset(self.deckOffset(geo: geoProxy)),
+                            removal: .offset(self.randomOffset)
+                            )
                         )
-                    )
+                            .onAppear {
+                                withAnimation(Animation.easeOut(duration: 1)) {
+                                    self.flipCard(card: card)
+                                }
+                        }
+                    }
                 }
             }.onAppear {
                 self.dealCards()
@@ -78,13 +104,6 @@ struct GameView: View {
             //            .background(Color.orange)
 
             HStack {
-                Group {
-                    deck
-                    Spacer()
-                }
-                .multilineTextAlignment(.leading)
-                .frame(maxHeight: 100)
-
                 Text("Score: \(game.points)")
                     .bold()
                     .multilineTextAlignment(.trailing)
@@ -105,12 +124,19 @@ struct GameView: View {
         HStack {
             makeActionButton(text: "New Game", action: self.newGame)
 
-            makeActionButton(text: "Deal Cards",
+            deck
+                .aspectRatio(contentMode: .fill)
+                .onTapGesture {
+                    self.dealMoreCards()
+            }
+
+            makeActionButton(text: "Cheat",
                              action: self.dealMoreCards,
                              borderColor: game.deckCardsNumber == 0 ? disabledButtonColor : Color(red: 52 / 255, green: 199 / 255, blue: 89 / 255))
                 .disabled(game.deckCardsNumber == 0)
         }
-        .padding([.leading, .trailing])
+        .frame(maxHeight: 50)
+        .padding()
     }
 
     // MARK: - ACTIONS
@@ -123,15 +149,19 @@ struct GameView: View {
                           action: @escaping () -> Void,
                           borderColor: Color = Color.blue) -> some View {
         Button(action: action) {
-            HStack {
+            VStack {
                 Spacer()
-                Text(text)
+                HStack {
+                    Spacer()
+                    Text(text)
+                    Spacer()
+                }
                 Spacer()
             }
             .font(.headline)
             .foregroundColor(Color.black)
-            .padding()
             .overlay(buttonOverlay(borderColor: borderColor))
+            .padding([.top, .bottom])
         }
     }
 
@@ -139,12 +169,12 @@ struct GameView: View {
         RoundedRectangle(cornerRadius: 10)
             .stroke(borderColor, lineWidth: 3)
             .foregroundColor(borderColor)
-            .padding([.leading, .trailing])
     }
 
-    private var deckPosition: CGSize {
-        return CGSize(width: -1000, height: -1000)
+    private func deckOffset(geo: GeometryProxy) -> CGSize {
+        return CGSize(width: geo.size.width, height: geo.size.height)
     }
+
 
     private var randomOffset: CGSize {
         let screenSize: CGSize = UIScreen.main.bounds.size
@@ -173,9 +203,13 @@ struct GameView: View {
     }
 
     private func dealMoreCards() {
-        dealCards(numberOfCards: 1)
-        dealCards(numberOfCards: 1, delay: 0.5)
-        dealCards(numberOfCards: 1, delay: 1)
+        withAnimation(Animation.easeOut(duration: 1)) {
+            self.game.dealCards(1)
+        }
+
+        //        dealCards(numberOfCards: 1)
+        //        dealCards(numberOfCards: 1, delay: 0.5)
+        //        dealCards(numberOfCards: 1, delay: 1)
     }
 }
 

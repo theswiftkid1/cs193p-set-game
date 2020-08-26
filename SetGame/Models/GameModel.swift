@@ -79,7 +79,6 @@ struct GameModel {
                 cards.remove(at: randomCardIndex)
             }
         }
-        dealtCards.updateAll({ $0.isFaceUp = true })
     }
 
     private func isMatch(_ selectedCards: Set<Card>) -> Bool {

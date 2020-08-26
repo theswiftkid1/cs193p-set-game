@@ -24,15 +24,17 @@ struct DeckView: View {
                     cornerRadius: self.cornerRadius,
                     edgeLineWidth: self.edgeLineWidth
                 )
-                    .offset(x: 0 + CGFloat((self.displayedNumberOfCards - index) * self.spacing), y: 0)
+                    .offset(
+                        x: 0 + CGFloat((self.displayedNumberOfCards - index) * self.spacing),
+                        y: 0
+                )
             }
             .frame(maxWidth: UIScreen.main.bounds.width,
                    maxHeight: UIScreen.main.bounds.width)
             .rotationEffect(.degrees(90))
 
-            Text("\(numberOfCards)")
-                .bold()
-                .padding([.top])
+            Image(systemName: "sparkles")
+                .font(.largeTitle)
         }
         .offset(x: 0, y: 0 - CGFloat(displayedNumberOfCards * spacing / 2))
     }
