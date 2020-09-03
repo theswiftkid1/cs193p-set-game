@@ -3,6 +3,25 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "GameView.deckOffset(geometry:):GameView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "geometry">
+            </PersistentString>
+            <PersistentString
+               value = "deckPosition">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "checkRules #1 &lt;A&gt;(of:) in GameModel.isSet(cards:):GameModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "array.count == Set(array).count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "mk_timer_arm:(null)">
          <PersistentStrings>
             <PersistentString
@@ -27,14 +46,6 @@
             </PersistentString>
             <PersistentString
                value = "self.checkNumber(of: self.cards)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "checkRules #1 &lt;A&gt;(of:) in GameModel.isSet(cards:):GameModel.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "array.count == Set(array).count">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

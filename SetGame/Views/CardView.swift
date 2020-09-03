@@ -58,6 +58,7 @@ struct CardView: View {
             x: 0,
             y: 0
         )
+        .scaleEffect(card.isSelected ? 1.10 : 1)
     }
 }
 

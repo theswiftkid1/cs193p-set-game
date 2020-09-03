@@ -8,34 +8,16 @@
 
 import SwiftUI
 
-struct DeckViewModifier: ViewModifier {
-    var geometry: GeometryProxy
-
-    func body(content: Content) -> some View {
-        let frame = self.geometry.frame(in: CoordinateSpace.local)
-        let size = CGSize(width: frame.origin.x - 0, height: frame.origin.y - 100)
-        return content.offset(size)
-    }
-}
-
-extension AnyTransition {
-    static func dealFromDeck(geometry: GeometryProxy) -> AnyTransition {
-        .modifier(
-            active: DeckViewModifier(geometry: geometry),
-            identity: DeckViewModifier(geometry: geometry)
-        )
-    }
-}
-
 struct GameView: View {
     @ObservedObject var game: GameViewModel
+    @State var deckPosition: CGRect = CGRect(x: 0, y: 0, width: 0, height: 0)
 
     let disabledButtonColor = Color.gray
 
     var body: some View {
         VStack(alignment: .center) {
-            if game.isGameOver {
-                endGame
+            if self.game.isGameOver {
+                self.endGame
                     .transition(
                         AnyTransition.asymmetric(
                             insertion: AnyTransition.scale(scale: 10).animation(.spring()),
@@ -43,12 +25,30 @@ struct GameView: View {
                         )
                 )
             } else {
-                topBar
-                gameTable
+                self.topBar
+                self.board
+                self.bottomBar
             }
-
-            bottomBar
-        }
+        }.overlay(
+            ZStack {
+                Circle()
+                    .foregroundColor(.red)
+                    .frame(width: 10, height: 10)
+                    .position(x: self.deckPosition.minX, y: self.deckPosition.minY)
+                Circle()
+                    .foregroundColor(.blue)
+                    .frame(width: 10, height: 10)
+                    .position(x: self.deckPosition.minX, y: self.deckPosition.maxY)
+                Circle()
+                    .foregroundColor(.green)
+                    .frame(width: 10, height: 10)
+                    .position(x: self.deckPosition.maxX, y: self.deckPosition.minY)
+                Circle()
+                    .foregroundColor(.yellow)
+                    .frame(width: 10, height: 10)
+                    .position(x: self.deckPosition.maxX, y: self.deckPosition.maxY)
+            }.edgesIgnoringSafeArea(.all)
+        )
     }
 
     // MARK: - END GAME
@@ -59,33 +59,35 @@ struct GameView: View {
 
     // MARK: - GAME
 
-    var gameTable: some View {
-        VStack {
-            ZStack {
-                GeometryReader { geoProxy in
-                    Grid(items: self.game.dealtCards) { card in
+    var board: some View {
+        GeometryReader { geometry in
+            VStack {
+                ZStack {
+                    Grid(self.game.dealtCards) { card, index, layout in
                         CardView(card: card)
                             .padding([.bottom])
-                            .scaleEffect(card.isSelected ? 1.10 : 1)
                             .onTapGesture {
                                 withAnimation(.easeInOut(duration: 0.1)) {
                                     self.game.pickCard(card: card)
                                 }
                         }
-                        .transition(.asymmetric(
-                            insertion: .offset(self.deckOffset(geo: geoProxy)),
-                            removal: .offset(self.randomOffset)
-                            )
-                        )
-                            .onAppear {
-                                withAnimation(Animation.easeOut(duration: 1)) {
-                                    self.flipCard(card: card)
-                                }
+                        .onAppear {
+                            withAnimation(Animation.easeOut(duration: 1)) {
+                                self.game.flipCard(card: card)
+                            }
                         }
+                        .transition(AnyTransition.asymmetric(
+                            insertion: AnyTransition.offset(self.deckOffset(
+                                layout.location(ofItemAt: index).x,
+                                layout.location(ofItemAt: index).y
+                            )),
+                            removal: AnyTransition.offset(self.randomOffset)
+                        ))
+                            .edgesIgnoringSafeArea(.all)
                     }
+                }.onAppear {
+                    self.dealCards()
                 }
-            }.onAppear {
-                self.dealCards()
             }
         }
     }
@@ -101,49 +103,51 @@ struct GameView: View {
                     .bold()
                 Spacer()
             }
-            //            .background(Color.orange)
 
             HStack {
                 Text("Score: \(game.points)")
                     .bold()
                     .multilineTextAlignment(.trailing)
-                //                    .background(Color.blue)
             }
         }
         .padding([.leading, .trailing])
-        //        .background(Color.green)
-    }
-
-    var deck: some View {
-        DeckView(numberOfCards: game.deckCardsNumber)
     }
 
     // MARK: - BOTTOM BAR
 
     var bottomBar: some View {
         HStack {
-            makeActionButton(text: "New Game", action: self.newGame)
+            self.makeActionButton(text: "New Game", action: self.newGame)
+                        .aspectRatio(contentMode: .fill)
 
-            deck
-                .aspectRatio(contentMode: .fill)
+            GeometryReader { geo in
+            DeckView(numberOfCards: self.game.deckCardsNumber)
+//                .frame(width: 100, height: 100, alignment: .center)
                 .onTapGesture {
+                    print("Red \(self.deckPosition.minX), \(self.deckPosition.minY) ")
+                    print("Blue \(self.deckPosition.minX), \(self.deckPosition.maxY) ")
+                    print("Green \(self.deckPosition.maxX), \(self.deckPosition.minY) ")
+                    print("Yellow \(self.deckPosition.maxX), \(self.deckPosition.maxY) ")
                     self.dealMoreCards()
-            }
+                }
+                .onAppear {
+                    self.deckPosition = geo.frame(in: CoordinateSpace.global)
+                }
+            }.aspectRatio(contentMode: .fit)
 
-            makeActionButton(text: "Cheat",
+
+
+            self.makeActionButton(text: "Cheat",
                              action: self.dealMoreCards,
-                             borderColor: game.deckCardsNumber == 0 ? disabledButtonColor : Color(red: 52 / 255, green: 199 / 255, blue: 89 / 255))
-                .disabled(game.deckCardsNumber == 0)
+                             borderColor: self.game.deckCardsNumber == 0 ? self.disabledButtonColor : Color(red: 52 / 255, green: 199 / 255, blue: 89 / 255))
+                .disabled(self.game.deckCardsNumber == 0)
         }
         .frame(maxHeight: 50)
         .padding()
+
     }
 
     // MARK: - ACTIONS
-
-    func flipCard(card: GameModel.Card) {
-        self.game.flipCard(card: card)
-    }
 
     func makeActionButton(text: String,
                           action: @escaping () -> Void,
@@ -171,8 +175,15 @@ struct GameView: View {
             .foregroundColor(borderColor)
     }
 
-    private func deckOffset(geo: GeometryProxy) -> CGSize {
-        return CGSize(width: geo.size.width, height: geo.size.height)
+    private func deckOffset(_ cardPositionX: CGFloat, _ cardPositionY: CGFloat) -> CGSize {
+                print("Card position \(cardPositionX), \(cardPositionY) ")
+        print("Deck position \(self.deckPosition.minX), \(self.deckPosition.minY) ")
+        print("Offset \(-cardPositionX + self.deckPosition.minX), \(-cardPositionY + self.deckPosition.minY) ")
+                print("-------")
+        return CGSize(
+            width: -cardPositionX + self.deckPosition.minX,
+            height: -cardPositionY + self.deckPosition.minY
+        )
     }
 
 

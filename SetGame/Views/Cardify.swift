@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Cardify: AnimatableModifier {
     var rotation: Double
+    var sideRotation: Double
     var isFaceUp: Bool { rotation < 90 }
 
     var animatableData: Double {
@@ -46,6 +47,7 @@ struct Cardify: AnimatableModifier {
 
     init(isFaceUp: Bool) {
         rotation = isFaceUp ? 0 : 180
+        sideRotation = isFaceUp ? 0 : 90
     }
 
     func body(content: Content) -> some View {
@@ -59,5 +61,6 @@ struct Cardify: AnimatableModifier {
         .padding(edgeLineWidth)
         .aspectRatio(2/3, contentMode: ContentMode.fit)
         .rotation3DEffect(Angle.degrees(rotation), axis: (0,1,0))
+        .rotation3DEffect(Angle.degrees(sideRotation), axis: (0,0,1))
     }
 }
