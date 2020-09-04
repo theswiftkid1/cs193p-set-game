@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct Cardify: AnimatableModifier {
-    var rotation: Double
-    var sideRotation: Double
-    var isFaceUp: Bool { rotation < 90 }
+    private var rotation: Double
+    private var sideRotation: Double
+    private var isFaceUp: Bool { rotation < 90 }
 
-    var animatableData: Double {
+    internal var animatableData: Double {
         get { return rotation }
         set { rotation = newValue }
     }
@@ -26,10 +26,10 @@ struct Cardify: AnimatableModifier {
             RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(Color.white)
 
+            content
+
             RoundedRectangle(cornerRadius: cornerRadius)
                 .strokeBorder(Color.black, lineWidth: edgeLineWidth)
-
-            content
         }
             .opacity(isFaceUp ? 1 : 0)
     }

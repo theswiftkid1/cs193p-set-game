@@ -40,25 +40,27 @@ struct CardView: View {
     }
 
     var body: some View {
-        Group {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.white)
+                .shadow(
+                    color: self.shadowColor,
+                    radius: self.card.isSelected ? 10 : 0,
+                    x: 0,
+                    y: 0
+            )
+
             VStack {
-                ForEach(0..<card.number) { _ in
+                ForEach(0..<self.card.number) { _ in
                     self.cardShape
                         .foregroundColor(Color(self.card.color))
                         .opacity(self.opacity)
                 }
             }
             .padding()
-            .cardify(isFaceUp: card.isFaceUp)
         }
-        .clipped()
-        .shadow(
-            color: shadowColor,
-            radius: card.isSelected ? 10 : 0,
-            x: 0,
-            y: 0
-        )
-        .scaleEffect(card.isSelected ? 1.10 : 1)
+        .cardify(isFaceUp: self.card.isFaceUp)
+        .scaleEffect(self.card.isSelected ? 1.10 : 1)
     }
 }
 
