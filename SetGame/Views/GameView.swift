@@ -10,9 +10,19 @@ import SwiftUI
 
 struct GameView: View {
     @ObservedObject var game: GameViewModel
-    @State var deckPosition: CGRect = CGRect(x: 0, y: 0, width: 0, height: 0)
+    @State var deckViewData: DeckViewData = DeckViewData()
+
+    struct DeckViewData {
+        var deckPositionX: CGFloat = 0
+        var deckPositionY: CGFloat = 0
+        var deckCardSize: CGSize = CGSize(width: 0, height: 0)
+        var deckContainerHeight: CGFloat = 0
+        var deckContainerWidth: CGFloat = 0
+    }
 
     let disabledButtonColor = Color.gray
+    let newGameButtonColor = Color.blue
+    let cheatButtonColor = Color(red: 52 / 255, green: 199 / 255, blue: 89 / 255)
 
     var body: some View {
         VStack(alignment: .center) {
@@ -38,37 +48,68 @@ struct GameView: View {
         EndGame()
     }
 
-    // MARK: - GAME
+    // MARK: - BOARD
 
     var board: some View {
-        VStack {
-            ZStack {
-                Grid(self.game.dealtCards) { card, index, layout in
-                    CardView(card: card)
-                        .padding([.bottom])
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.1)) {
-                                self.game.pickCard(card: card)
-                            }
-                    }
-                    .onAppear {
-                        withAnimation(Animation.easeOut(duration: 1)) {
-                            self.game.flipCard(card: card)
-                        }
-                    }
-                    .transition(.asymmetric(
-                        insertion: .offset(self.deckOffset(
-                            layout.location(ofItemAt: index).x,
-                            layout.location(ofItemAt: index).y
-                        )),
-                        removal: .offset(self.randomOffset)
-                    ))
-                }
-            }.onAppear {
-                self.dealCards()
-            }
+        Grid(self.game.dealtCards) { card, index, layout in
+            self.card(card: card, index: index, layout: layout)
+                .padding([.bottom])
+        }.onAppear {
+            self.dealCards()
         }
     }
+
+    func card(card: GameModel.Card, index: Int, layout: GridLayout) -> some View {
+        CardView(card: card)
+//            .frame(
+//                width: card.isFaceUp ? layout.itemSize.width : self.deckViewData.deckCardSize.width,
+//                height: card.isFaceUp ? layout.itemSize.height : self.deckViewData.deckCardSize.height
+//        )
+            .onTapGesture {
+                withAnimation(.easeInOut(duration: 0.1)) {
+                    self.game.pickCard(card: card)
+                }
+        }
+        .onAppear {
+            withAnimation(Animation.easeOut(duration: 5)) {
+                self.game.flipCard(card: card)
+            }
+        }
+        .transition(.asymmetric(
+            insertion: .offset(self.deckOffset(
+                layout: layout,
+                cardIndex: index
+            )),
+            removal: .offset(self.randomOffset)
+        ))
+    }
+
+    private var randomOffset: CGSize {
+        let screenSize: CGSize = UIScreen.main.bounds.size
+        let screenSide: [CGFloat] = [-1, 1]
+
+        let x: CGFloat = .random(in: screenSize.width..<screenSize.width * 1.5) * screenSide.randomElement()!
+        let y: CGFloat = .random(in: screenSize.height..<screenSize.height * 1.5) * screenSide.randomElement()!
+
+        return CGSize(width: x, height: y)
+    }
+
+    private func deckOffset(layout: GridLayout, cardIndex: Int) -> CGSize {
+        let cardPositionX = layout.location(ofItemAt: cardIndex).x
+        let cardPositionY = layout.location(ofItemAt: cardIndex).y
+//        print("-----------------")
+//        print("DECK MID Y \(self.deckPosition.midY)")
+//        print("CARD MID Y \(cardPositionY)")
+//        print("UI BOUNDS \(UIScreen.main.bounds.size.height)")
+//        print("DECK POSITION HEIGHT Y \(self.deckPosition.size.height)")
+//        print("GRID HEIGHT \(layout.size.height)")
+//        print("Offset \((self.deckPosition.midY - cardPositionY) - (UIScreen.main.bounds.size.height - self.deckPosition.size.height - layout.size.height)) ")
+        return CGSize(
+            width: (self.deckViewData.deckPositionX - cardPositionX),
+            height: (self.deckViewData.deckPositionY - cardPositionY) - (UIScreen.main.bounds.size.height - self.deckViewData.deckContainerHeight - layout.size.height)
+        )
+    }
+
 
     // MARK: - TOP BAR
 
@@ -95,18 +136,22 @@ struct GameView: View {
 
     var bottomBar: some View {
         HStack {
-            self.makeActionButton(text: "New Game", action: self.newGame)
+            self.makeActionButton(text: "New Game", action: self.newGame, borderColor: self.newGameButtonColor)
 
             Spacer()
 
             GeometryReader { geo in
                 DeckView(numberOfCards: self.game.deckCardsNumber)
                     .onTapGesture {
+                        self.deckViewData = DeckViewData(
+                            deckPositionX: geo.frame(in: .global).midX,
+                            deckPositionY: geo.frame(in: .global).midY,
+                            deckCardSize: geo.frame(in: .global).size,
+                            deckContainerHeight: geo.frame(in: .named("bottomBar")).height,
+                            deckContainerWidth: geo.frame(in: .named("bottomBar")).width
+                        )
                         self.dealMoreCards()
-                    }
-                    .onAppear {
-                        self.deckPosition = geo.frame(in: CoordinateSpace.global)
-                    }
+                }
             }
             .frame(minWidth: 100, minHeight: 100)
 
@@ -114,9 +159,10 @@ struct GameView: View {
 
             self.makeActionButton(text: "Cheat",
                                   action: self.dealMoreCards,
-                                  borderColor: self.game.deckCardsNumber == 0 ? self.disabledButtonColor : Color(red: 52 / 255, green: 199 / 255, blue: 89 / 255))
+                                  borderColor: self.game.deckCardsNumber == 0 ? self.disabledButtonColor : self.cheatButtonColor)
                 .disabled(self.game.deckCardsNumber == 0)
         }
+        .coordinateSpace(name: "bottomBar")
         .frame(maxWidth: .infinity, maxHeight: 70)
         .padding([.leading, .trailing])
     }
@@ -125,7 +171,7 @@ struct GameView: View {
 
     func makeActionButton(text: String,
                           action: @escaping () -> Void,
-                          borderColor: Color = Color.blue) -> some View {
+                          borderColor: Color) -> some View {
         Button(action: action) {
             VStack {
                 Spacer()
@@ -146,28 +192,6 @@ struct GameView: View {
         RoundedRectangle(cornerRadius: 10)
             .stroke(borderColor, lineWidth: 3)
             .foregroundColor(borderColor)
-    }
-
-    private func deckOffset(_ cardPositionX: CGFloat, _ cardPositionY: CGFloat) -> CGSize {
-        print("Card position \(cardPositionX), \(cardPositionY) ")
-        print("Deck position \(self.deckPosition.midX), \(self.deckPosition.midY) ")
-        print("Offset \(-cardPositionX + self.deckPosition.minX), \(-cardPositionY + self.deckPosition.minY) ")
-        print("-------")
-        return CGSize(
-            width: -cardPositionX + self.deckPosition.midX,
-            height: -cardPositionY + self.deckPosition.midY - 100
-        )
-    }
-
-
-    private var randomOffset: CGSize {
-        let screenSize: CGSize = UIScreen.main.bounds.size
-        let screenSide: [CGFloat] = [-1, 1]
-
-        let x: CGFloat = .random(in: screenSize.width..<screenSize.width * 1.5) * screenSide.randomElement()!
-        let y: CGFloat = .random(in: screenSize.height..<screenSize.height * 1.5) * screenSide.randomElement()!
-
-        return CGSize(width: x, height: y)
     }
 
     private func dealCards(numberOfCards: Int = 12,
