@@ -53,35 +53,73 @@ struct GameView: View {
     var board: some View {
         Grid(self.game.dealtCards) { card, index, layout in
             self.card(card: card, index: index, layout: layout)
-                .padding([.bottom])
         }.onAppear {
             self.dealCards()
         }
     }
 
+    @State var scale: CGFloat = 1
+
     func card(card: GameModel.Card, index: Int, layout: GridLayout) -> some View {
         CardView(card: card)
-//            .frame(
-//                width: card.isFaceUp ? layout.itemSize.width : self.deckViewData.deckCardSize.width,
-//                height: card.isFaceUp ? layout.itemSize.height : self.deckViewData.deckCardSize.height
-//        )
+            .scaleEffect(scale)
             .onTapGesture {
                 withAnimation(.easeInOut(duration: 0.1)) {
                     self.game.pickCard(card: card)
                 }
         }
         .onAppear {
-            withAnimation(Animation.easeOut(duration: 5)) {
+            withAnimation(Animation.easeOut(duration: 1)) {
                 self.game.flipCard(card: card)
+                let deckArea = self.deckViewData.deckCardSize.width * self.deckViewData.deckCardSize.height
+                self.scale = deckArea / (layout.itemSize.height * layout.itemSize.width)
             }
         }
-        .transition(.asymmetric(
-            insertion: .offset(self.deckOffset(
-                layout: layout,
-                cardIndex: index
-            )),
+
+        .transition(AnyTransition.asymmetric(
+            insertion: dealCard(
+                cardPositionX: layout.location(ofItemAt: index).x,
+                cardPositionY: layout.location(ofItemAt: index).y,
+                cardHeight: layout.itemSize.height,
+                cardWidth: layout.itemSize.width,
+                boardHeight: layout.size.height
+            ),
             removal: .offset(self.randomOffset)
         ))
+    }
+
+    private func dealCard(cardPositionX: CGFloat,
+                          cardPositionY: CGFloat,
+                          cardHeight: CGFloat,
+                          cardWidth: CGFloat,
+                          boardHeight: CGFloat) -> AnyTransition {
+        let deckArea = self.deckViewData.deckCardSize.width * self.deckViewData.deckCardSize.height
+
+        return AnyTransition.offset(self.deckOffset(
+                cardPositionX: cardPositionX,
+                cardPositionY: cardPositionY,
+                boardHeight: boardHeight
+            ))
+//            .combined(with: AnyTransition.scale(
+//                scale: deckArea / (cardHeight * cardWidth)
+//            ))
+    }
+
+    private func deckOffset(cardPositionX: CGFloat,
+                            cardPositionY: CGFloat,
+                            boardHeight: CGFloat) -> CGSize { // layout.size.height
+        print("-----------------")
+        print("DECK Y \(self.deckViewData.deckPositionY)")
+        print("CARD Y \(cardPositionY)")
+        print("UI BOUNDS \(UIScreen.main.bounds.size.height)")
+        print("DECK CONTAINER HEIGHT \(self.deckViewData.deckContainerHeight)")
+        print("BOARD HEIGHT Y \(boardHeight)")
+//                print("GRID HEIGHT \(layout.size.height)")
+//        print("Offset \((self.deckViewData.deckPositionY - cardPositionY) - (UIScreen.main.bounds.size.height - self.deckViewData.deckContainerHeight - boardHeight)) ")
+        return CGSize(
+            width: (self.deckViewData.deckPositionX - cardPositionX),
+            height: (self.deckViewData.deckPositionY - cardPositionY) - (UIScreen.main.bounds.size.height - self.deckViewData.deckContainerHeight - boardHeight)
+        )
     }
 
     private var randomOffset: CGSize {
@@ -94,21 +132,7 @@ struct GameView: View {
         return CGSize(width: x, height: y)
     }
 
-    private func deckOffset(layout: GridLayout, cardIndex: Int) -> CGSize {
-        let cardPositionX = layout.location(ofItemAt: cardIndex).x
-        let cardPositionY = layout.location(ofItemAt: cardIndex).y
-//        print("-----------------")
-//        print("DECK MID Y \(self.deckPosition.midY)")
-//        print("CARD MID Y \(cardPositionY)")
-//        print("UI BOUNDS \(UIScreen.main.bounds.size.height)")
-//        print("DECK POSITION HEIGHT Y \(self.deckPosition.size.height)")
-//        print("GRID HEIGHT \(layout.size.height)")
-//        print("Offset \((self.deckPosition.midY - cardPositionY) - (UIScreen.main.bounds.size.height - self.deckPosition.size.height - layout.size.height)) ")
-        return CGSize(
-            width: (self.deckViewData.deckPositionX - cardPositionX),
-            height: (self.deckViewData.deckPositionY - cardPositionY) - (UIScreen.main.bounds.size.height - self.deckViewData.deckContainerHeight - layout.size.height)
-        )
-    }
+
 
 
     // MARK: - TOP BAR
@@ -142,6 +166,15 @@ struct GameView: View {
 
             GeometryReader { geo in
                 DeckView(numberOfCards: self.game.deckCardsNumber)
+                    .onAppear {
+                        self.deckViewData = DeckViewData(
+                            deckPositionX: geo.frame(in: .global).midX,
+                            deckPositionY: geo.frame(in: .global).midY,
+                            deckCardSize: geo.frame(in: .global).size,
+                            deckContainerHeight: geo.frame(in: .named("bottomBar")).height,
+                            deckContainerWidth: geo.frame(in: .named("bottomBar")).width
+                        )
+                    }
                     .onTapGesture {
                         self.deckViewData = DeckViewData(
                             deckPositionX: geo.frame(in: .global).midX,
