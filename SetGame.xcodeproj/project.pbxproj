@@ -17,8 +17,7 @@
 		CA4A726C24F443C000256191 /* View+Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4A726B24F443C000256191 /* View+Cardify.swift */; };
 		CA4A727024F454D300256191 /* DeckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4A726F24F454D300256191 /* DeckView.swift */; };
 		CA4A727224F4553B00256191 /* CardBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4A727124F4553B00256191 /* CardBackView.swift */; };
-		CAA1186024E1D2B500C9A495 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1185F24E1D2B500C9A495 /* AppDelegate.swift */; };
-		CAA1186224E1D2B500C9A495 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1186124E1D2B500C9A495 /* SceneDelegate.swift */; };
+		CA4F1AB8251F98B000A768B9 /* SetGameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4F1AB7251F98B000A768B9 /* SetGameApp.swift */; };
 		CAA1186424E1D2B500C9A495 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1186324E1D2B500C9A495 /* GameView.swift */; };
 		CAA1186624E1D2B600C9A495 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAA1186524E1D2B600C9A495 /* Assets.xcassets */; };
 		CAA1186924E1D2B600C9A495 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAA1186824E1D2B600C9A495 /* Preview Assets.xcassets */; };
@@ -44,9 +43,8 @@
 		CA4A726B24F443C000256191 /* View+Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Cardify.swift"; sourceTree = "<group>"; };
 		CA4A726F24F454D300256191 /* DeckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckView.swift; sourceTree = "<group>"; };
 		CA4A727124F4553B00256191 /* CardBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBackView.swift; sourceTree = "<group>"; };
+		CA4F1AB7251F98B000A768B9 /* SetGameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameApp.swift; sourceTree = "<group>"; };
 		CAA1185C24E1D2B500C9A495 /* SetGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SetGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CAA1185F24E1D2B500C9A495 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CAA1186124E1D2B500C9A495 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CAA1186324E1D2B500C9A495 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		CAA1186524E1D2B600C9A495 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CAA1186824E1D2B600C9A495 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -140,8 +138,6 @@
 			isa = PBXGroup;
 			children = (
 				CAA1186D24E1D2B600C9A495 /* Info.plist */,
-				CAA1185F24E1D2B500C9A495 /* AppDelegate.swift */,
-				CAA1186124E1D2B500C9A495 /* SceneDelegate.swift */,
 				CAA1186524E1D2B600C9A495 /* Assets.xcassets */,
 				CA65148624E1DB9B00DAB30C /* Extensions */,
 				CAA1186A24E1D2B600C9A495 /* LaunchScreen.storyboard */,
@@ -149,6 +145,7 @@
 				CAA1186724E1D2B600C9A495 /* Preview Content */,
 				CA65148524E1DB6B00DAB30C /* ViewModels */,
 				CA65148324E1DB4E00DAB30C /* Views */,
+				CA4F1AB7251F98B000A768B9 /* SetGameApp.swift */,
 			);
 			path = SetGame;
 			sourceTree = "<group>";
@@ -188,7 +185,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1160;
-				LastUpgradeCheck = 1160;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = theswiftkid;
 				TargetAttributes = {
 					CAA1185B24E1D2B500C9A495 = {
@@ -234,13 +231,12 @@
 			files = (
 				CAA1187624E1D40C00C9A495 /* GameViewModel.swift in Sources */,
 				CA30975B24E8517F00B7DF19 /* SetShading.swift in Sources */,
+				CA4F1AB8251F98B000A768B9 /* SetGameApp.swift in Sources */,
 				CA30975924E850BE00B7DF19 /* SetShape.swift in Sources */,
 				CA4A726024F2B07200256191 /* MatchStatus.swift in Sources */,
 				CA4A726424F2BA6500256191 /* MutableCollection+Update.swift in Sources */,
-				CAA1186024E1D2B500C9A495 /* AppDelegate.swift in Sources */,
 				CA4A726C24F443C000256191 /* View+Cardify.swift in Sources */,
 				CAC8C71B24EDB40600922999 /* Diamond.swift in Sources */,
-				CAA1186224E1D2B500C9A495 /* SceneDelegate.swift in Sources */,
 				CAA1187824E1D5C000C9A495 /* GridLayout.swift in Sources */,
 				CA4A726624F2C64600256191 /* Collection+Exists.swift in Sources */,
 				CA4A727224F4553B00256191 /* CardBackView.swift in Sources */,
@@ -296,6 +292,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -320,7 +317,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -356,6 +353,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -374,7 +372,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
