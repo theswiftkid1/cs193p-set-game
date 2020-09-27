@@ -16,6 +16,12 @@ struct EndGame: View {
                 .font(.largeTitle)
             Spacer()
         }
+        .transition(
+            .asymmetric(
+                insertion: AnyTransition.scale(scale: 10).animation(.spring()),
+                removal: AnyTransition.opacity.animation(.easeIn(duration: 1))
+            )
+        )
     }
 }
 

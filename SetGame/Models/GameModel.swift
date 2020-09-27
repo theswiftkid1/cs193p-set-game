@@ -71,13 +71,20 @@ struct GameModel {
 
     // MARK: - Mutations
 
-    mutating func dealCards(_ numberOfCards: Int = setSize) {
-        for _ in 0..<numberOfCards {
-            if let randomCard = cards.randomElement(),
-                let randomCardIndex = cards.firstIndex(of: randomCard) {
-                dealtCards.append(randomCard)
-                cards.remove(at: randomCardIndex)
-            }
+    mutating func dealCard() -> Card? {
+        if let randomCard = cards.randomElement(),
+            let randomCardIndex = cards.firstIndex(of: randomCard) {
+            dealtCards.append(randomCard)
+            cards.remove(at: randomCardIndex)
+            print("dealing card \(randomCard.id)")
+            return randomCard
+        }
+        return nil
+    }
+
+    mutating func dealCards(_ numberOfCards: Int) -> Void {
+        (0..<numberOfCards).forEach { _ in
+            _ = dealCard()
         }
     }
 
@@ -112,6 +119,7 @@ struct GameModel {
 
     mutating func flipCard(card: Card) {
         if let cardIndex = dealtCards.firstIndex(of: card) {
+            print("flipping card \(card.id)")
             dealtCards[cardIndex].isFaceUp.toggle()
         }
     }

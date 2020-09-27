@@ -72,6 +72,18 @@ class GameViewModel: ObservableObject {
         game.dealCards(numberOfCards)
     }
 
+    func dealCard() {
+        let _ = game.dealCard()
+//        print("dealtCard \(dealtCard)")
+//        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+//            print("Executing")
+//            if let card = dealtCard {
+//                print("Executing 2")
+//                self.game.flipCard(card: card)
+//            }
+//        }
+    }
+
     func pickCard(card: GameModel.Card) {
         game.pickCard(card: card)
     }

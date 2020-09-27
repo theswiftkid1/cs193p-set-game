@@ -24,12 +24,12 @@
 		CAA1186C24E1D2B600C9A495 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAA1186A24E1D2B600C9A495 /* LaunchScreen.storyboard */; };
 		CAA1187424E1D3F000C9A495 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1187324E1D3F000C9A495 /* GameModel.swift */; };
 		CAA1187624E1D40C00C9A495 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1187524E1D40C00C9A495 /* GameViewModel.swift */; };
-		CAA1187824E1D5C000C9A495 /* GridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1187724E1D5C000C9A495 /* GridLayout.swift */; };
-		CAA1187A24E1D5F000C9A495 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1187924E1D5F000C9A495 /* Grid.swift */; };
 		CAA1187C24E1D63200C9A495 /* Array+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1187B24E1D63200C9A495 /* Array+Identifiable.swift */; };
 		CAC8C71B24EDB40600922999 /* Diamond.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC8C71A24EDB40600922999 /* Diamond.swift */; };
 		CACC017224E709B700DF7B6A /* Collection+Count.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACC017124E709B700DF7B6A /* Collection+Count.swift */; };
 		CAD79FE724E5C34B00005242 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD79FE624E5C34B00005242 /* CardView.swift */; };
+		CADE0E7F2520E95200FCE458 /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADE0E7E2520E95200FCE458 /* TopBar.swift */; };
+		CADE0E822520E99A00FCE458 /* BottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADE0E812520E99A00FCE458 /* BottomBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,12 +52,12 @@
 		CAA1186D24E1D2B600C9A495 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAA1187324E1D3F000C9A495 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		CAA1187524E1D40C00C9A495 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
-		CAA1187724E1D5C000C9A495 /* GridLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridLayout.swift; sourceTree = "<group>"; };
-		CAA1187924E1D5F000C9A495 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		CAA1187B24E1D63200C9A495 /* Array+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Identifiable.swift"; sourceTree = "<group>"; };
 		CAC8C71A24EDB40600922999 /* Diamond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diamond.swift; sourceTree = "<group>"; };
 		CACC017124E709B700DF7B6A /* Collection+Count.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Count.swift"; sourceTree = "<group>"; };
 		CAD79FE624E5C34B00005242 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		CADE0E7E2520E95200FCE458 /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
+		CADE0E812520E99A00FCE458 /* BottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,15 +74,8 @@
 		CA65148324E1DB4E00DAB30C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				CAA1187924E1D5F000C9A495 /* Grid.swift */,
-				CAA1187724E1D5C000C9A495 /* GridLayout.swift */,
-				CAA1186324E1D2B500C9A495 /* GameView.swift */,
-				CAD79FE624E5C34B00005242 /* CardView.swift */,
-				CAC8C71A24EDB40600922999 /* Diamond.swift */,
-				CA4A726724F2D80B00256191 /* EndGame.swift */,
-				CA4A726924F442BC00256191 /* Cardify.swift */,
-				CA4A726F24F454D300256191 /* DeckView.swift */,
-				CA4A727124F4553B00256191 /* CardBackView.swift */,
+				CADE0E852520EAFD00FCE458 /* Board */,
+				CADE0E842520EAE700FCE458 /* Card */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -138,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				CAA1186D24E1D2B600C9A495 /* Info.plist */,
+				CA4F1AB7251F98B000A768B9 /* SetGameApp.swift */,
 				CAA1186524E1D2B600C9A495 /* Assets.xcassets */,
 				CA65148624E1DB9B00DAB30C /* Extensions */,
 				CAA1186A24E1D2B600C9A495 /* LaunchScreen.storyboard */,
@@ -145,7 +139,6 @@
 				CAA1186724E1D2B600C9A495 /* Preview Content */,
 				CA65148524E1DB6B00DAB30C /* ViewModels */,
 				CA65148324E1DB4E00DAB30C /* Views */,
-				CA4F1AB7251F98B000A768B9 /* SetGameApp.swift */,
 			);
 			path = SetGame;
 			sourceTree = "<group>";
@@ -156,6 +149,29 @@
 				CAA1186824E1D2B600C9A495 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CADE0E842520EAE700FCE458 /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				CAC8C71A24EDB40600922999 /* Diamond.swift */,
+				CA4A726924F442BC00256191 /* Cardify.swift */,
+				CAD79FE624E5C34B00005242 /* CardView.swift */,
+				CA4A727124F4553B00256191 /* CardBackView.swift */,
+			);
+			path = Card;
+			sourceTree = "<group>";
+		};
+		CADE0E852520EAFD00FCE458 /* Board */ = {
+			isa = PBXGroup;
+			children = (
+				CA4A726F24F454D300256191 /* DeckView.swift */,
+				CA4A726724F2D80B00256191 /* EndGame.swift */,
+				CAA1186324E1D2B500C9A495 /* GameView.swift */,
+				CADE0E7E2520E95200FCE458 /* TopBar.swift */,
+				CADE0E812520E99A00FCE458 /* BottomBar.swift */,
+			);
+			path = Board;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,8 +252,9 @@
 				CA4A726024F2B07200256191 /* MatchStatus.swift in Sources */,
 				CA4A726424F2BA6500256191 /* MutableCollection+Update.swift in Sources */,
 				CA4A726C24F443C000256191 /* View+Cardify.swift in Sources */,
+				CADE0E7F2520E95200FCE458 /* TopBar.swift in Sources */,
+				CADE0E822520E99A00FCE458 /* BottomBar.swift in Sources */,
 				CAC8C71B24EDB40600922999 /* Diamond.swift in Sources */,
-				CAA1187824E1D5C000C9A495 /* GridLayout.swift in Sources */,
 				CA4A726624F2C64600256191 /* Collection+Exists.swift in Sources */,
 				CA4A727224F4553B00256191 /* CardBackView.swift in Sources */,
 				CAD79FE724E5C34B00005242 /* CardView.swift in Sources */,
@@ -247,7 +264,6 @@
 				CA4A727024F454D300256191 /* DeckView.swift in Sources */,
 				CAA1187424E1D3F000C9A495 /* GameModel.swift in Sources */,
 				CAA1187C24E1D63200C9A495 /* Array+Identifiable.swift in Sources */,
-				CAA1187A24E1D5F000C9A495 /* Grid.swift in Sources */,
 				CAA1186424E1D2B500C9A495 /* GameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -60,7 +60,6 @@ struct CardView: View {
             .padding()
         }
         .cardify(isFaceUp: self.card.isFaceUp)
-        .scaleEffect(self.card.isSelected ? 1.10 : 1)
     }
 }
 
