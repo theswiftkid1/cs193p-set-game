@@ -87,8 +87,4 @@ class GameViewModel: ObservableObject {
     func pickCard(card: GameModel.Card) {
         game.pickCard(card: card)
     }
-
-    func flipCard(card: GameModel.Card) {
-        game.flipCard(card: card)
-    }
 }

@@ -59,7 +59,7 @@ struct CardView: View {
             }
             .padding()
         }
-        .cardify(isFaceUp: self.card.isFaceUp)
+        .cardify()
     }
 }
 

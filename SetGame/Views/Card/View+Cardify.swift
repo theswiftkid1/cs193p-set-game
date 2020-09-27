@@ -9,7 +9,7 @@
 import SwiftUI
 
 extension View {
-    func cardify(isFaceUp: Bool) -> some View {
-        return self.modifier(Cardify(isFaceUp: isFaceUp))
+    func cardify() -> some View {
+        return self.modifier(Cardify())
     }
 }

@@ -11,6 +11,7 @@ import SwiftUI
 struct GameView: View {
     @ObservedObject var game: GameViewModel
     @State var deckData: DeckData = DeckData(deckCardsNumber: 4)
+    @State var shownCards: [UUID] = []
 
     var body: some View {
         VStack(alignment: .center) {
@@ -46,7 +47,7 @@ struct GameView: View {
     @State var cardSelection: Bool = false
 
     func cardTransition() -> AnyTransition {
-        print("NOT Selected Transition")
+        print("NOT Face Up Transition")
         return AnyTransition.asymmetric(
             insertion: dealCardTransition(
                 cardPositionX: 50,
@@ -59,11 +60,11 @@ struct GameView: View {
 
     @ViewBuilder
     func buildCardView(card: GameModel.Card) -> some View {
-        if card.isFaceUp == false {
+        if (!shownCards.contains(card.id)) {
             CardView(card: card)
                 .transition(cardTransition())
                 .onTapGesture {
-                    game.flipCard(card: card)
+                    shownCards.append(card.id)
                     game.pickCard(card: card)
                 }
         } else {
@@ -109,7 +110,9 @@ struct GameView: View {
 
     private func deckOffset(cardPositionX: CGFloat,
                             cardPositionY: CGFloat,
-                            boardHeight: CGFloat) -> CGSize { // layout.size.height
+                            boardHeight: CGFloat) -> CGSize {
+
+        // layout.size.height
         //        print("-----------------")
         //        print("DECK Y \(self.deckData.deckPositionY)")
         //        print("CARD Y \(cardPositionY)")
@@ -118,6 +121,7 @@ struct GameView: View {
         //        print("BOARD HEIGHT Y \(boardHeight)")
         //                print("GRID HEIGHT \(layout.size.height)")
         //        print("Offset \((self.deckData.deckPositionY - cardPositionY) - (UIScreen.main.bounds.size.height - self.deckData.deckContainerHeight - boardHeight)) ")
+
         return CGSize(
             width: (deckData.deckPositionX - cardPositionX),
             height: (deckData.deckPositionY - cardPositionY) - (UIScreen.main.bounds.size.height - deckData.deckContainerHeight - boardHeight)
@@ -145,6 +149,9 @@ struct GameView: View {
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
         let model = GameViewModel()
-        return GameView(game: model)
+        return Group {
+            GameView(game: model)
+            GameView(game: model)
+        }
     }
 }

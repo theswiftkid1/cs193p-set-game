@@ -23,7 +23,6 @@ struct GameModel {
         var shape: SetShape
         var shading: SetShading
         var isSelected: Bool = false
-        var isFaceUp: Bool = false
         var matchStatus: MatchStatus = .Unmatched
     }
 
@@ -115,13 +114,6 @@ struct GameModel {
             checkColor(of: selectedCards) &&
             checkShape(of: selectedCards) &&
             checkShading(of: selectedCards)
-    }
-
-    mutating func flipCard(card: Card) {
-        if let cardIndex = dealtCards.firstIndex(of: card) {
-            print("flipping card \(card.id)")
-            dealtCards[cardIndex].isFaceUp.toggle()
-        }
     }
 
     mutating func pickCard(card: Card) {

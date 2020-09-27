@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct Cardify: AnimatableModifier {
-    @State var isFaceUp: Bool
+    @State var isFaceUp: Bool = false
     private let cornerRadius: CGFloat = 10
     private let edgeLineWidth: CGFloat = 2
 

@@ -106,7 +106,6 @@
 				CACC017124E709B700DF7B6A /* Collection+Count.swift */,
 				CA4A726324F2BA6500256191 /* MutableCollection+Update.swift */,
 				CA4A726524F2C64600256191 /* Collection+Exists.swift */,
-				CA4A726B24F443C000256191 /* View+Cardify.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -154,6 +153,7 @@
 		CADE0E842520EAE700FCE458 /* Card */ = {
 			isa = PBXGroup;
 			children = (
+				CA4A726B24F443C000256191 /* View+Cardify.swift */,
 				CAC8C71A24EDB40600922999 /* Diamond.swift */,
 				CA4A726924F442BC00256191 /* Cardify.swift */,
 				CAD79FE624E5C34B00005242 /* CardView.swift */,
