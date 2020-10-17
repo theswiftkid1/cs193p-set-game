@@ -32,10 +32,10 @@ struct CardView: View {
             return AnyView(Diamond().stroke(lineWidth: shapeStrokeWidth))
         case (.Diamond, _):
             return AnyView(Diamond())
-        case (.Rectangle, .Open):
-            return AnyView(Rectangle().stroke(lineWidth: shapeStrokeWidth))
-        case (.Rectangle, _):
-            return AnyView(Rectangle())
+        case (.Squiggle, .Open):
+            return AnyView(Squiggle().stroke(lineWidth: shapeStrokeWidth))
+        case (.Squiggle, _):
+            return AnyView(Squiggle())
         }
     }
 

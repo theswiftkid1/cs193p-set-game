@@ -11,5 +11,5 @@ import Foundation
 enum SetShape {
     case Circle
     case Diamond
-    case Rectangle
+    case Squiggle
 }

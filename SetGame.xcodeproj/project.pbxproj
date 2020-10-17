@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		CA30975924E850BE00B7DF19 /* SetShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA30975824E850BE00B7DF19 /* SetShape.swift */; };
 		CA30975B24E8517F00B7DF19 /* SetShading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA30975A24E8517F00B7DF19 /* SetShading.swift */; };
+		CA40D0F9253B67A10040E89B /* Squiggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40D0F8253B67A10040E89B /* Squiggle.swift */; };
 		CA4A726024F2B07200256191 /* MatchStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4A725F24F2B07200256191 /* MatchStatus.swift */; };
 		CA4A726424F2BA6500256191 /* MutableCollection+Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4A726324F2BA6500256191 /* MutableCollection+Update.swift */; };
 		CA4A726624F2C64600256191 /* Collection+Exists.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4A726524F2C64600256191 /* Collection+Exists.swift */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		CA30975824E850BE00B7DF19 /* SetShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetShape.swift; sourceTree = "<group>"; };
 		CA30975A24E8517F00B7DF19 /* SetShading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetShading.swift; sourceTree = "<group>"; };
+		CA40D0F8253B67A10040E89B /* Squiggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Squiggle.swift; sourceTree = "<group>"; };
 		CA4A725F24F2B07200256191 /* MatchStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchStatus.swift; sourceTree = "<group>"; };
 		CA4A726324F2BA6500256191 /* MutableCollection+Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MutableCollection+Update.swift"; sourceTree = "<group>"; };
 		CA4A726524F2C64600256191 /* Collection+Exists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Exists.swift"; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				CA4A726924F442BC00256191 /* Cardify.swift */,
 				CA4A726F24F454D300256191 /* DeckView.swift */,
 				CA4A727124F4553B00256191 /* CardBackView.swift */,
+				CA40D0F8253B67A10040E89B /* Squiggle.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -244,6 +247,7 @@
 				CA4A726824F2D80B00256191 /* EndGame.swift in Sources */,
 				CA4A726A24F442BC00256191 /* Cardify.swift in Sources */,
 				CACC017224E709B700DF7B6A /* Collection+Count.swift in Sources */,
+				CA40D0F9253B67A10040E89B /* Squiggle.swift in Sources */,
 				CA4A727024F454D300256191 /* DeckView.swift in Sources */,
 				CAA1187424E1D3F000C9A495 /* GameModel.swift in Sources */,
 				CAA1187C24E1D63200C9A495 /* Array+Identifiable.swift in Sources */,

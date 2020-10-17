@@ -34,17 +34,6 @@ struct Cardify: AnimatableModifier {
             .opacity(isFaceUp ? 1 : 0)
     }
 
-    private var cardBack: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .foregroundColor(Color.gray)
-
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .strokeBorder(Color.black, lineWidth: edgeLineWidth)
-        }
-            .opacity(isFaceUp ? 0 : 1)
-    }
-
     init(isFaceUp: Bool) {
         rotation = isFaceUp ? 0 : 180
         sideRotation = isFaceUp ? 0 : 90

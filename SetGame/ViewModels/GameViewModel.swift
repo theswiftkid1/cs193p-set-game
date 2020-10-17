@@ -27,7 +27,7 @@ class GameViewModel: ObservableObject {
             UIColor.init(red: 10 / 255, green: 132 / 255, blue: 255 / 255, alpha: 1),
             UIColor.init(red: 52 / 255, green: 199 / 255, blue: 89 / 255, alpha: 1)
         ]
-        let shapes: [SetShape] = [.Circle, .Diamond, .Rectangle]
+        let shapes: [SetShape] = [.Circle, .Diamond, .Squiggle]
         let shadings: [SetShading] = [.Plain, .Open, .Striped]
         let numberOfShapes = 3
 
