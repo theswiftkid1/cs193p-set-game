@@ -70,6 +70,7 @@ struct CardView: View {
                 ForEach(0..<card.number) { _ in
                     cardShape
                         .foregroundColor(Color(card.color))
+                        .aspectRatio(1, contentMode: .fit)
                 }
             }
             .padding()

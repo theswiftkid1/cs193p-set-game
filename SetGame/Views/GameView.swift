@@ -187,11 +187,12 @@ struct GameView: View {
 
             makeActionButton(
                 text: "Cheat",
-                borderColor: game.deckCardsNumber == 0 ? disabledButtonColor : cheatButtonColor
+                borderColor: cheatButtonColor
             ) {
-                dealCards(numberOfCards: 12)
+                withAnimation(Animation.easeInOut(duration: 2)) {
+                    game.cheat()
+                }
             }
-                .disabled(game.deckCardsNumber == 0)
         }
         .coordinateSpace(name: "bottomBar")
         .frame(maxWidth: .infinity, maxHeight: 70)

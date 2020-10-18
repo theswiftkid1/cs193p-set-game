@@ -116,27 +116,25 @@ struct GameModel {
         }
     }
 
-    mutating func pickCard(card: Card) {
-        func clearMatchStatuses() {
-            if dealtCards.exists({ $0.matchStatus == .Matched }) {
-                dealCards(3)
-            }
-            dealtCards.removeAll { $0.matchStatus == .Matched }
-            dealtCards.updateAll { $0.matchStatus = .Unmatched }
+    private mutating func clearPreviousSet() {
+        if dealtCards.exists({ $0.matchStatus == .Matched }) {
+            dealCards(3)
         }
+        dealtCards.removeAll { $0.matchStatus == .Matched }
+        dealtCards.updateAll { $0.isSelected = false }
+        dealtCards.updateAll { $0.matchStatus = .Unmatched }
+    }
 
+
+    mutating func pickCard(card: Card) {
         func selectCard(at index: Int) {
             dealtCards[index].isSelected = true
             let selectedCards = Set(dealtCards.filter { $0.isSelected })
 
             if selectedCards.count > GameModel.setSize
                 || dealtCards.exists({ $0.matchStatus == .WrongMatch }) {
-                for dealtCardIndex in dealtCards.indices {
-                    if dealtCardIndex != index {
-                        dealtCards[dealtCardIndex].isSelected = false
-                    }
-                }
-                clearMatchStatuses()
+                clearPreviousSet()
+                dealtCards[index].isSelected = true
             } else if selectedCards.count == dealtCards.count {
                 dealtCards.removeAll()
                 points += 1
@@ -155,6 +153,31 @@ struct GameModel {
                 dealtCards[cardIndex].isSelected = false
             } else {
                 selectCard(at: cardIndex)
+            }
+        }
+    }
+
+    mutating func cheat() {
+        if dealtCards.count < 3 {
+            return
+        }
+        clearPreviousSet()
+
+        for i1 in 0...dealtCards.count - 3 {
+            for i2 in i1 + 1...dealtCards.count - 2 {
+                for i3 in i2 + 1...dealtCards.count - 1 {
+                    let selectedSet: Set = [
+                        dealtCards[i1],
+                        dealtCards[i2],
+                        dealtCards[i3],
+                    ]
+                    if isMatch(selectedSet) {
+                        pickCard(card: dealtCards[i1])
+                        pickCard(card: dealtCards[i2])
+                        pickCard(card: dealtCards[i3])
+                        return
+                    }
+                }
             }
         }
     }

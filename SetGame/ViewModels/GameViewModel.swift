@@ -79,4 +79,8 @@ class GameViewModel: ObservableObject {
     func flipCard(card: GameModel.Card) {
         game.flipCard(card: card)
     }
+
+    func cheat() {
+        game.cheat()
+    }
 }
