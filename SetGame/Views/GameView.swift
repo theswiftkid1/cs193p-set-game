@@ -26,8 +26,8 @@ struct GameView: View {
 
     var body: some View {
         VStack(alignment: .center) {
-            if self.game.isGameOver {
-                self.endGame
+            if game.isGameOver {
+                endGame
                     .transition(
                         .asymmetric(
                             insertion: AnyTransition.scale(scale: 10).animation(.spring()),
@@ -35,9 +35,9 @@ struct GameView: View {
                         )
                     )
             } else {
-                self.topBar
-                self.board.zIndex(1)
-                self.bottomBar
+                topBar
+                board.zIndex(1)
+                bottomBar
             }
         }
     }
@@ -51,23 +51,25 @@ struct GameView: View {
     // MARK: - BOARD
 
     var board: some View {
-        Grid(self.game.dealtCards) { card, index, layout in
-            self.card(card: card, index: index, layout: layout)
+        Grid(game.dealtCards) { card, index, layout in
+            buildCardView(card: card, index: index, layout: layout)
         }.onAppear {
-            self.dealCards()
+            dealCards()
         }
     }
 
-    func card(card: GameModel.Card, index: Int, layout: GridLayout) -> some View {
+    func buildCardView(card: GameModel.Card,
+                       index: Int,
+                       layout: GridLayout) -> some View {
         CardView(card: card)
             .onTapGesture {
                 withAnimation(.easeInOut(duration: 0.1)) {
-                    self.game.pickCard(card: card)
+                    game.pickCard(card: card)
                 }
             }
             .onAppear {
                 withAnimation(Animation.easeOut(duration: 1)) {
-                    self.game.flipCard(card: card)
+                    game.flipCard(card: card)
                 }
             }
             .padding([.bottom])
@@ -79,7 +81,7 @@ struct GameView: View {
                     cardWidth: layout.itemSize.width,
                     boardHeight: layout.size.height
                 ),
-                removal: .offset(self.randomOffset)
+                removal: .offset(randomOffset)
             ))
     }
 
@@ -88,27 +90,28 @@ struct GameView: View {
                                     cardHeight: CGFloat,
                                     cardWidth: CGFloat,
                                     boardHeight: CGFloat) -> AnyTransition {
-        return AnyTransition.offset(self.deckOffset(
+        return AnyTransition.offset(findDeckOffset(
             cardPositionX: cardPositionX,
             cardPositionY: cardPositionY,
             boardHeight: boardHeight
         ))
     }
 
-    private func deckOffset(cardPositionX: CGFloat,
+    private func findDeckOffset(cardPositionX: CGFloat,
                             cardPositionY: CGFloat,
-                            boardHeight: CGFloat) -> CGSize { // layout.size.height
+                            boardHeight: CGFloat) -> CGSize {
         print("-----------------")
-        print("DECK Y \(self.deckViewData.deckPositionY)")
+        print("DECK Y \(deckViewData.deckPositionY)")
         print("CARD Y \(cardPositionY)")
         print("UI BOUNDS \(UIScreen.main.bounds.size.height)")
-        print("DECK CONTAINER HEIGHT \(self.deckViewData.deckContainerHeight)")
+        print("DECK CONTAINER HEIGHT \(deckViewData.deckContainerHeight)")
         print("BOARD HEIGHT Y \(boardHeight)")
         //          print("GRID HEIGHT \(layout.size.height)")
-        //        print("Offset \((self.deckViewData.deckPositionY - cardPositionY) - (UIScreen.main.bounds.size.height - self.deckViewData.deckContainerHeight - boardHeight)) ")
+        //        print("Offset \((deckViewData.deckPositionY - cardPositionY) - (UIScreen.main.bounds.size.height - deckViewData.deckContainerHeight - boardHeight)) ")
         return CGSize(
-            width: (self.deckViewData.deckPositionX - cardPositionX),
-            height: (self.deckViewData.deckPositionY - cardPositionY) - (UIScreen.main.bounds.size.height - self.deckViewData.deckContainerHeight - boardHeight)
+            width: (deckViewData.deckPositionX - cardPositionX),
+            height: (deckViewData.deckPositionY - cardPositionY) -
+                (UIScreen.main.bounds.size.height - deckViewData.deckContainerHeight - boardHeight)
         )
     }
 
@@ -147,19 +150,19 @@ struct GameView: View {
 
     var bottomBar: some View {
         HStack {
-            self.makeActionButton(
+            makeActionButton(
                 text: "New Game",
-                borderColor: self.newGameButtonColor
+                borderColor: newGameButtonColor
             ) {
-                self.newGame()
+                newGame()
             }
 
             Spacer()
 
             GeometryReader { geo in
-                DeckView(numberOfCards: self.game.deckCardsNumber)
+                DeckView(numberOfCards: game.deckCardsNumber)
                     .onAppear {
-                        self.deckViewData = DeckViewData(
+                        deckViewData = DeckViewData(
                             deckPositionX: geo.frame(in: .global).midX,
                             deckPositionY: geo.frame(in: .global).midY,
                             deckCardSize: geo.frame(in: .global).size,
@@ -168,14 +171,14 @@ struct GameView: View {
                         )
                     }
                     .onTapGesture {
-                        self.deckViewData = DeckViewData(
+                        deckViewData = DeckViewData(
                             deckPositionX: geo.frame(in: .global).midX,
                             deckPositionY: geo.frame(in: .global).midY,
                             deckCardSize: geo.frame(in: .global).size,
                             deckContainerHeight: geo.frame(in: .named("bottomBar")).height,
                             deckContainerWidth: geo.frame(in: .named("bottomBar")).width
                         )
-                        self.dealCards(numberOfCards: 3)
+                        dealCards(numberOfCards: 3)
                     }
             }
             .frame(minWidth: 100, minHeight: 100)
@@ -188,7 +191,7 @@ struct GameView: View {
             ) {
                 dealCards(numberOfCards: 12)
             }
-                .disabled(self.game.deckCardsNumber == 0)
+                .disabled(game.deckCardsNumber == 0)
         }
         .coordinateSpace(name: "bottomBar")
         .frame(maxWidth: .infinity, maxHeight: 70)
@@ -225,7 +228,7 @@ struct GameView: View {
 
     private func dealCards(numberOfCards: Int = 12) {
         withAnimation(Animation.easeOut(duration: 0.5)) {
-            self.game.dealCards(numberOfCards)
+            game.dealCards(numberOfCards)
         }
     }
 
@@ -233,7 +236,7 @@ struct GameView: View {
     // when the previous animation is finished
     private func newGame() {
         withAnimation(.easeIn(duration: 0.5)) {
-            self.game.clearGame()
+            game.clearGame()
         }
         dealCards()
     }

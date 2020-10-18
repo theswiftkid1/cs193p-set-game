@@ -10,10 +10,8 @@ import SwiftUI
 
 struct CardView: View {
     var card: GameModel.Card
-    let shapeStrokeWidth: CGFloat = 2
-    var opacity: Double {
-        card.shading == .Striped ? 0.5 : 1
-    }
+    let strokeWidth: CGFloat = 2
+    let stripeWidth: Int = 10
     var shadowColor: Color {
         switch card.matchStatus {
         case .Unmatched: return Color.black
@@ -21,21 +19,39 @@ struct CardView: View {
         case .WrongMatch: return Color(red: 255 / 255, green: 59 / 255, blue: 48 / 255)
         }
     }
+    private let aspectRatio: CGFloat = 2/3
 
+    private func buildStripedShape<S>(shape: S) -> some View
+        where S: Shape {
+        ZStack {
+            Stripes(stripesDistance: 10, incline: 10)
+                .stroke(lineWidth: CGFloat(stripeWidth))
+                .mask(shape)
+            shape.stroke(lineWidth: strokeWidth)
+        }
+    }
+
+    @ViewBuilder
     var cardShape: some View {
         switch (card.shape, card.shading) {
         case (.Circle, .Open):
-            return AnyView(Circle().stroke(lineWidth: shapeStrokeWidth))
+            Circle().stroke(lineWidth: strokeWidth)
+        case (.Circle, .Striped):
+            buildStripedShape(shape: Circle())
         case (.Circle, _):
-            return AnyView(Circle())
+            Circle()
         case (.Diamond, .Open):
-            return AnyView(Diamond().stroke(lineWidth: shapeStrokeWidth))
+            Diamond().stroke(lineWidth: strokeWidth)
+        case (.Diamond, .Striped):
+            buildStripedShape(shape: Diamond())
         case (.Diamond, _):
-            return AnyView(Diamond())
+            Diamond()
         case (.Squiggle, .Open):
-            return AnyView(Squiggle().stroke(lineWidth: shapeStrokeWidth))
+            Squiggle().stroke(lineWidth: strokeWidth)
+        case (.Squiggle, .Striped):
+            buildStripedShape(shape: Squiggle())
         case (.Squiggle, _):
-            return AnyView(Squiggle())
+            Squiggle()
         }
     }
 
@@ -44,23 +60,22 @@ struct CardView: View {
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.white)
                 .shadow(
-                    color: self.shadowColor,
-                    radius: self.card.isSelected ? 10 : 0,
+                    color: shadowColor,
+                    radius: card.isSelected ? 10 : 0,
                     x: 0,
                     y: 0
             )
 
             VStack {
-                ForEach(0..<self.card.number) { _ in
-                    self.cardShape
-                        .foregroundColor(Color(self.card.color))
-                        .opacity(self.opacity)
+                ForEach(0..<card.number) { _ in
+                    cardShape
+                        .foregroundColor(Color(card.color))
                 }
             }
             .padding()
         }
-        .cardify(isFaceUp: self.card.isFaceUp)
-        .scaleEffect(self.card.isSelected ? 1.10 : 1)
+        .cardify(isFaceUp: card.isFaceUp, aspectRatio: aspectRatio)
+        .scaleEffect(card.isSelected ? 1.10 : 1)
     }
 }
 
@@ -69,6 +84,8 @@ struct CardView_Previews: PreviewProvider {
 
     static var previews: some View {
         game.dealCards(1)
+        let card1 = game.dealtCards.first!
+        game.flipCard(card: card1)
         let card = game.dealtCards.first!
         return CardView(card: card)
             .previewLayout(.fixed(width: 200, height: 300))

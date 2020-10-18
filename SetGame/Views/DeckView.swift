@@ -19,13 +19,13 @@ struct DeckView: View {
 
     var body: some View {
         ZStack {
-            ForEach(0..<self.displayedNumberOfCards) { index in
+            ForEach(0..<displayedNumberOfCards) { index in
                 CardBackView(
-                    cornerRadius: self.cornerRadius,
-                    edgeLineWidth: self.edgeLineWidth
+                    cornerRadius: cornerRadius,
+                    edgeLineWidth: edgeLineWidth
                 )
                     .offset(
-                        x: 0 + CGFloat((self.displayedNumberOfCards - index) * self.spacing),
+                        x: 0 + CGFloat((displayedNumberOfCards - index) * spacing),
                         y: 0
                 )
             }
@@ -36,7 +36,7 @@ struct DeckView: View {
             Image(systemName: "sparkles")
                 .font(.largeTitle)
         }
-        .offset(x: 0, y: 0 - CGFloat(self.displayedNumberOfCards * self.spacing / 2))
+        .offset(x: 0, y: 0 - CGFloat(displayedNumberOfCards * spacing / 2))
     }
 }
 

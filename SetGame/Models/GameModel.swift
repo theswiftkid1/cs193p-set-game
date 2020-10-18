@@ -39,7 +39,7 @@ struct GameModel {
             for shape in shapes {
                 for shading in shadings {
                     for number in 1...numberOfShapes {
-                        self.cards.append(Card(
+                        cards.append(Card(
                             color: color,
                             number: number,
                             shape: shape,

@@ -41,33 +41,40 @@ struct Squiggle: Shape {
         // MARK: Control Top
 
         let controlTop1 = CGPoint(
-            x: topLeft.x + (topRight.x - topLeft.x) / 2.6,
-            y: topLeft.y - height * controlOffset
+            x: topLeft.x + (topRight.x - topLeft.x) / 2,
+            y: topLeft.y + height * controlOffset
         )
         let controlTop2 = CGPoint(
-            x: topLeft.x + (topRight.x - topLeft.x) / 2.6,
-            y: topLeft.y + height * controlOffset
+            x: topLeft.x + (topRight.x - topLeft.x) / 2,
+            y: topLeft.y - height * controlOffset
         )
 
         // MARK: Control Bottom
 
         let controlBottom1 = CGPoint(
-            x: bottomLeft.x + (bottomRight.x - bottomLeft.x) / 1.6,
+            x: bottomLeft.x + (bottomRight.x - bottomLeft.x) / 2,
             y: bottomLeft.y - height * controlOffset
         )
         let controlBottom2 = CGPoint(
-            x: bottomLeft.x + (bottomRight.x - bottomLeft.x) / 1.6,
+            x: bottomLeft.x + (bottomRight.x - bottomLeft.x) / 2,
             y: bottomLeft.y + height * controlOffset
         )
 
         // MARK: Path
 
         var path = Path()
-        path.move(to: bottomLeft)
-        path.addLine(to: topLeft)
-        path.addCurve(to: topRight, control1: controlTop2, control2: controlTop1)
+        path.move(to: topRight)
         path.addLine(to: bottomRight)
         path.addCurve(to: bottomLeft, control1: controlBottom1, control2: controlBottom2)
+        path.addLine(to: topLeft)
+        path.addCurve(to: topRight, control1: controlTop1, control2: controlTop2)
         return path
+    }
+}
+
+struct Squiggle_Previews: PreviewProvider {
+    static var previews: some View {
+        Squiggle()
+            .frame(width: 200, height: 300, alignment: .center)
     }
 }

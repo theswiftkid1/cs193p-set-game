@@ -9,7 +9,11 @@
 import SwiftUI
 
 extension View {
-    func cardify(isFaceUp: Bool) -> some View {
-        return self.modifier(Cardify(isFaceUp: isFaceUp))
+    func cardify(isFaceUp: Bool,
+                 aspectRatio: CGFloat) -> some View {
+        return self.modifier(Cardify(
+            isFaceUp: isFaceUp,
+            aspectRatio: aspectRatio
+        ))
     }
 }
